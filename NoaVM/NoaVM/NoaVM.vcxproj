@@ -22,15 +22,20 @@
     <ClInclude Include="NoaCode.h" />
     <ClInclude Include="NoaFile.h" />
     <ClInclude Include="NoaFunc.h" />
+    <ClInclude Include="NoaMath.h" />
     <ClInclude Include="NoaRuntime.h" />
     <ClInclude Include="RAM.h" />
     <ClInclude Include="type.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CodeStack.cpp" />
+    <ClCompile Include="FuncTable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NoaFile.cpp" />
     <ClCompile Include="NoaFunc.cpp" />
+    <ClCompile Include="NoaMath.cpp" />
     <ClCompile Include="NoaRuntime.cpp" />
+    <ClCompile Include="Operator.cpp" />
     <ClCompile Include="RAM.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -131,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>

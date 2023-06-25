@@ -1,2 +1,11 @@
 ﻿  main.cpp
-  NoaCompiler.vcxproj -> D:\Work\NoaSystem\NoaCompiler\x64\Debug\NoaCompiler.exe
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(42,25): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(249,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(249,11): message : 请考虑在格式字符串中使用“%zd”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(287,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(287,11): message : 请考虑在格式字符串中使用“%zd”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(368,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(368,11): message : 请考虑在格式字符串中使用“%zd”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(691,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(691,12): message : 请考虑在格式字符串中使用“%zd”
+  NoaCompiler.vcxproj -> D:\Work\NoaSystem\NoaSystem\NoaCompiler\x64\Debug\NoaCompiler.exe

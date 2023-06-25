@@ -1,23 +1,44 @@
 #ifndef NOAVM_NOACODE_H
 #define NOAVM_NOACODE_H
 
-//指令区0xff00-0xffff
-#define ver  0xff00
-#define prts 0xff01	
-#define mov  0xff02
-#define add  0xff03
-#define prt  0xff04
-#define sub  0xff05
-#define AND  0xff06
-#define mst  0xff07
-#define wtm  0xff08
-#define OR   0xff09
-#define mul  0xff0a
-#define div  0xff0b
-#define loop 0xff0c
-#define call 0xff0d
-#define recall 0xff0e
-#define quit 0xff48
+//指令区0xfc00-0xfcff
+#define fun		0xfc			//函数标志位
+#define _start	0x00			//开始
+#define _end	0xff			//返回
+#define prts	0x01	
+#define mov		0x02
+#define add		0x03
+#define prt		0x04
+#define sub		0x05
+#define ANDB	0x06
+#define mst		0x07
+#define wtm		0x08
+#define ORB		0x09
+#define mul		0x0a
+#define div		0x0b
+#define loop	0x0c
+#define call	0x0d
+#define IF		0x0f
+#define AND		0x10
+#define OR		0x11
+#define CMP		0x12
+#define rfm     0x13
+#define ELSE    0x14             //和if相反
+
+
+//定义操作数
+#define _data 0xda
+
+//定义数据类型
+#define byte    0x13		//1B
+#define SHORT   0x14		//2B
+#define INT     0x15		//4B
+#define FLOATE	0x16		//4B
+#define LONG    0x17		//8B
+#define DOUBLE  0x18		//8B
+
+
+#define quit 0xe0
 
 //寄存器区
 #define eax 0x00
@@ -26,7 +47,7 @@
 #define edx 0x03
 
 #define ax  0x04
-#define qx  0x05
-#define spc 0x06
+#define qx  0x05//逻辑寄存器，用于存放逻辑运算的结果
+#define loopcounter 0x06//循环计数器,记录剩余要循环的次数
 
 #endif // !NOAVM_NOACODE_H

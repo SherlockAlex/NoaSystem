@@ -33,6 +33,9 @@
     <ClInclude Include="type.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="NoaMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +51,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RAM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Operator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CodeStack.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FuncTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NoaMath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
