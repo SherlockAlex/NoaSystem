@@ -3,7 +3,18 @@
 #define MAXSIZEOFLIST 100
 
 #include "NoaFile.h"
+#include "string.h"
 #include "RAM.h"
+
+//字符串常量池
+extern StringPool* stringPool;
+
+//整形常量池
+extern IntPool* intPool;
+
+//单精度浮点数常量池
+extern FloatPool* floatPool;
+
 
 typedef struct FuncNode {
 	//方法表对象，会在虚拟机加载noa文件时候，变量表，索引是函数的哈希值
@@ -20,7 +31,7 @@ typedef struct FuncTable {
 typedef struct CodeStack {
 	//栈,存放函数头的地址或者函数断点地址,当end指令执行是，表示一个函数运行完，出栈
 	int64* codeIndex;
-	int count;
+	int64 top;
 }CodeStack;
 
 typedef struct Operator {

@@ -1,8 +1,15 @@
-﻿  Operator.cpp
-  RAM.cpp
+﻿  NoaFunc.cpp
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(42,10): warning C4477: “printf”: 格式字符串“%c”需要类型“int”的参数，但可变参数 1 拥有了类型“int64”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(82,11): warning C4477: “printf”: 格式字符串“%c”需要类型“int”的参数，但可变参数 1 拥有了类型“int64”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(86,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“int64”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(86,11): message : 请考虑在格式字符串中使用“%lld”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(86,11): message : 请考虑在格式字符串中使用“%Id”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(86,11): message : 请考虑在格式字符串中使用“%I64d”
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(175,73): warning C4244: “参数”: 从“int64”转换到“uint8”，可能丢失数据
+D:\Work\NoaSystem\NoaSystem\NoaVM\NoaVM\NoaFunc.cpp(175,51): warning C4244: “参数”: 从“int64”转换到“uint8”，可能丢失数据
   正在生成代码
-  0 of 47 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  2 of 57 functions ( 3.5%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   NoaVM.vcxproj -> D:\Work\NoaSystem\NoaSystem\NoaVM\x64\Release\NoaVM.exe

@@ -2,13 +2,18 @@
 #include "NoaFunc.h"
 #include "string.h"
 #include <iostream>
-#include <io.h>
+#include <stdio.h>
 #include "RAM.h"
 #include "NoaCode.h"
 #include "NoaMath.h"
 
 uint8 pc = 0x00;
 FuncTable funcTable;
+
+//常量池区域
+StringPool* stringPool;
+IntPool* intPool;
+FloatPool* floatPool;
 
 int64 GetDataSize(const char * filePath) 
 {
@@ -38,13 +43,9 @@ NoaFile * LoadFile(const char* filePath)
 	}
 	int64 size = GetDataSize(filePath);
 	uint8* codes = (uint8*)malloc(size * sizeof(uint8));
-
 	fread(codes, sizeof(int64), size, file);
-
 	fclose(file);
-
 	bool isNoaFile = (codes[0] == 0x4e && codes[1] == 0x4f && codes[2] == 0x41);
-
 	if (!isNoaFile)
 	{
 		free(codes);
@@ -52,7 +53,6 @@ NoaFile * LoadFile(const char* filePath)
 		free(codes);
 		return nullptr;
 	}
-
 	NoaFile* noaFile = InitNoaFile(codes,size);
 	return noaFile;
 
@@ -62,15 +62,6 @@ int64 GetMainFuncIndex(FuncTable * table)
 {
 	//pc指向函数第一条指令的位置，fc一个字节标志，00 00 00 00表示地址
 	int64 pcIndex = -1;
-	/*for (int64 i = 4; i < file->length; i++) {
-		if (file->data[i - 4] == fun && 
-			file->data[i-3] == _start && file->data[i-2] == _start && 
-			file->data[i-1] == _start && file->data[i] == _start)
-		{
-			pcIndex = i + 1;
-			break;
-		}
-	}*/
 	uint8 code[4] = {_start,_start,_start,_start};
 	int64 hashCode = HashCode(code,4,0,4096);
 	FuncNode * mainFunc = GetFunc(table, hashCode);
@@ -95,6 +86,12 @@ int CreateOperator(OperatorMap * map)
 	InitOperator(sub,Sub,map);
 	InitOperator(IF,IFCode,map);
 	InitOperator(ELSE,ELSECode,map);
+	InitOperator(STRING,WriteString2Pool,map);		//保存字符串变量到磁盘中
+	InitOperator(STRREADER, ReadFromString, map);	//加载字符串到内存中
+	InitOperator(INT, WriteInt2Pool, map);
+	InitOperator(INTREADER,ReadIntFromPool,map);
+	InitOperator(FLOAT,WriteFloat2Pool,map);
+	InitOperator(FLOATREADER, ReadFloatFromPool, map);
 	return 0;
 }
 
@@ -113,6 +110,13 @@ void CreateFuncTable(NoaFile * file,FuncTable * table) {
 	}
 }
 
+void InitConstantPool() {
+	//初始化常量池
+	stringPool = InitStringPool(65535);
+	intPool = InitIntPool(65535);
+	floatPool = InitFloatPool(65535);
+}
+
 int Run(NoaFile* file) {
 
 	if (file==nullptr)
@@ -122,19 +126,29 @@ int Run(NoaFile* file) {
 	}
 	//运行内存：(1024*1024)Byte
 	RAM * ram = InitRAM(512);
+
+	//初始化指令表
 	OperatorMap opMap;
 	CodeStack callStack;
 	InitOperatorMap(&opMap, 255);
 	CreateOperator(&opMap);
+
+	//初始化函数栈
 	InitCodeStack(&callStack,1024);
 	int64 pcIndex = 0;
-	InitFuncTable(&funcTable);//初始化函数表
-	//往函数表中插入func数据
+
+	//初始化函数表
+	InitFuncTable(&funcTable);
 	CreateFuncTable(file,&funcTable);
+
+	//初始化常量池
+	InitConstantPool();
+
+	//获取主函数地址
 	pcIndex = GetMainFuncIndex(&funcTable);
 	if (pcIndex<0)
 	{
-		printf("error:无法找到程序入口地址: .Main:\n");
+		printf("[error]:无法找到程序入口地址: .Main:\n");
 		free(opMap.operatorMap);
 		free(ram->buffer);
 		free(ram);
@@ -142,6 +156,12 @@ int Run(NoaFile* file) {
 		free(file);
 		free(callStack.codeIndex);
 		free(funcTable.table);
+		free(stringPool->buffer);
+		free(stringPool);
+		free(intPool->buffer);
+		free(intPool);
+		free(floatPool->buffer);
+		free(floatPool);
 		return -1;
 	}
 
@@ -214,6 +234,7 @@ int Run(NoaFile* file) {
 			pramater13,pramater14,pramater15,pramater16,
 			pramater17,pramater18,pramater19,pramater20,
 			&pcIndex,file,&callStack);
+
 	}
 
 	std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
@@ -226,6 +247,12 @@ int Run(NoaFile* file) {
 	free(file->data);
 	free(file);
 	free(callStack.codeIndex);
+	free(stringPool->buffer);
+	free(stringPool);
+	free(intPool->buffer);
+	free(intPool);
+	free(floatPool->buffer);
+	free(floatPool);
 	//printf("释放资源完成\n");
 	return 0;
 }

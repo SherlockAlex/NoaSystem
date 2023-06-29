@@ -37,6 +37,7 @@ void PrintString(
 	NoaFile* file,
 	CodeStack* callStack
 ) {
+	//打印字符串
 	for (int64 i = noaRegister[2]; i < noaRegister[2] + noaRegister[3];i++) {
 		printf("%c",ram->buffer[i]);
 	}
@@ -72,6 +73,7 @@ void PrintRegister(
 	CodeStack* callStack
 	)
 {
+	float value = 0;
 	//打印寄存器里面的值
 	switch (paramer2)
 	{
@@ -80,7 +82,13 @@ void PrintRegister(
 			printf("%c",noaRegister[paramer1]);
 			break;
 		case 0x81:
+			//打印整形
 			printf("%d", noaRegister[paramer1]);
+			break;
+		case 0x82:
+			//打印浮点型
+			value = *(float*)&noaRegister[paramer1];
+			printf("%f", value);
 			break;
 		default:
 			break;
@@ -254,9 +262,6 @@ void WriteToRAM(
 )
 {
 	//用于保存变量用的
-	//int adress = paramer1 * (16777216) + paramer2 * (65535) + paramer3 * (256) + paramer4;
-	//ram->buffer[adress] = paramer5;
-	//(*pcIndex) = (*pcIndex) + 6;
 	ram->buffer[paramer1] = paramer2;
 	(*pcIndex) = (*pcIndex) + 3;
 }
@@ -291,10 +296,6 @@ extern void ReadFromRAM(
 {
 	//内存地址占4位
 	//从内存读取数据到寄存器中
-	//rfm eax a
-	/*int adress = paramer2 * (16777216) + paramer3 * (65535) + paramer4 * (256) + paramer5;
-	noaRegister[paramer1] = ram->buffer[adress];
-	(*pcIndex) = (*pcIndex) + 6;*/
 	noaRegister[paramer1] = ram->buffer[paramer2];
 	(*pcIndex) = (*pcIndex) + 3;
 }
@@ -364,8 +365,7 @@ void CallCode(
 	//函数位置定位搜索算法
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
-	//printf("\n[warring]:调用函数,语句地址为:%x %x %x %x，pc : %d\n", paramer1, paramer2, paramer3, paramer4,(*pcIndex));
-
+	
 }
 //
 void ReturnCode(
@@ -399,7 +399,7 @@ void ReturnCode(
 	//恢复现场
 	//recall
 	int64 returnIndex = GetHeadOfStack(callStack);
-	//printf("恢复地址:%d\n", returnIndex);
+	//printf("[warring]:恢复地址:%d\n", returnIndex);
 	PopCodeStack(callStack);
 	(*pcIndex) = returnIndex;
 }
@@ -432,13 +432,7 @@ extern void LoopCode(
 	CodeStack* callStack
 ) {
 	//循环到loopcounter的值小于0
-
-	//入栈循环出来后的函数地址
-	//printf("\n[warring]:执行循环语句,语句地址为:%x %x %x %x\n",paramer1,paramer2,paramer3,paramer4);
-	//当指令指针指到loop时候
-	//系统先访问loopcounter的值，如果他的值小于0，停止运行，并将指针指向下条指令的地址
-	//否则，系统会先把当前的pc的(loop)位置入栈，然后去调用对应的循环函数
-	int loopIndex = (*pcIndex);
+	int64 loopIndex = (*pcIndex);
 	if (noaRegister[loopcounter]<=0)
 	{
 		(*pcIndex) = loopIndex + 5;
@@ -567,3 +561,266 @@ void ELSECode(
 	//调用函数
 }
 
+void WriteString2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//变量地址H
+	uint8 paramer2,					//变量地址L
+	uint8 paramer3,					//字符地址
+	uint8 paramer4,					//字符
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) 
+{
+
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	
+	int64 adress = HashCode(code,2,0,65535);
+	int charIndex = (int)paramer3;
+	//printf("[warring]:保存字符串到常量池中,字符index:%d,字符为:%c\n",charIndex, paramer4);
+	if (stringPool->buffer[adress]==nullptr)
+	{
+		char stringValue[255];
+		stringPool->buffer[adress] = stringValue;
+	}
+	stringPool->buffer[adress][charIndex] = paramer4;
+	(*pcIndex) = (*pcIndex) + 5;
+}
+
+void ReadFromString(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//数据地址H
+	uint8 paramer2,					//数据地址L
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) 
+{
+	//printf("[warring]:读取字符串到内存中\n");
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code,2,0,65535);
+	char* str = stringPool->buffer[adress];
+	
+	//printf("[warring]:读取到的字符串常量为:%s\n",str);
+
+	//将字符串保存到一个特定的位置，即ram中
+	for (int i=0;i<strlen(str);i++) 
+	{
+		ram->buffer[i] = str[i];
+	}
+	(*pcIndex) = (*pcIndex) + 3;
+
+}
+
+void WriteInt2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//变量地址H
+	uint8 paramer2,					//变量地址L
+	uint8 paramer3,					//值H
+	uint8 paramer4,					//值H
+	uint8 paramer5,					//值H
+	uint8 paramer6,					//值L
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) 
+{
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, 65535);
+
+	int value = 0;
+	value = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
+	intPool->buffer[adress] = value;
+	printf("[warring]:写入对象池整型数据:%d,十六进制为:%x %x %x %x\n",value,paramer3,paramer4,paramer5,paramer6);
+	(*pcIndex) = (*pcIndex) + 7;
+}
+
+void ReadIntFromPool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//变量地址H
+	uint8 paramer2,					//变量地址L
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, 65535);
+	int value = intPool->buffer[adress];
+	printf("[warring]:内存整型数据:%d\n", value);
+	//printf("[warring]:读取到的字符串常量为:%s\n",str);
+
+	//将字符串保存到一个特定的位置，即ram中
+	ram->buffer[0] = value;
+	(*pcIndex) = (*pcIndex) + 3;
+
+}
+
+void WriteFloat2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//变量地址H
+	uint8 paramer2,					//变量地址L
+	uint8 paramer3,					//值
+	uint8 paramer4,					//值
+	uint8 paramer5,					//值
+	uint8 paramer6,					//值
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) 
+{
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, 65535);
+
+	int valueInt = 0;
+	valueInt = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
+
+	float value = 0;
+	value = *(float*)&valueInt;
+
+	floatPool->buffer[adress] = value;
+	printf("[warring]:写入对象池浮点型数据:%f,十六进制为:%x %x %x %x\n", value, paramer3, paramer4, paramer5, paramer6);
+	(*pcIndex) = (*pcIndex) + 7;
+}
+
+void ReadFloatFromPool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) 
+{
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, 65535);
+	float value = floatPool->buffer[adress];
+	printf("[warring]:内存浮点型数据:%f\n", value);
+	//printf("[warring]:读取到的字符串常量为:%s\n",str);
+
+	//将字符串保存到一个特定的位置，即ram中
+	ram->buffer[0] = *(int *) &value;
+	(*pcIndex) = (*pcIndex) + 3;
+}

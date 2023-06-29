@@ -81,15 +81,15 @@ int main(int argc,char * argv[]) {
 			//sscanf(funcName, "%x", &num);
 			uint32 hashCode = HashCode(funcName);
 			uint8 * nameCode = (uint8*)malloc(sizeof(uint8));
-			nameCode[0] = (hashCode & 0xff000000) >> 6;//高位
+			nameCode[0] = (hashCode & 0xff000000) >> 24;//高位
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x00ff0000) >> 4;
+			nameCode[0] = (hashCode & 0x00ff0000) >> 16;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x0000ff00) >> 2;
+			nameCode[0] = (hashCode & 0x0000ff00) >> 8;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
@@ -168,15 +168,15 @@ int main(int argc,char * argv[]) {
 
 			uint32 hashCode = HashCode(code);
 			uint8* nameCode = (uint8*)malloc(sizeof(uint8));
-			nameCode[0] = (hashCode & 0xff000000) >> 6;//高位
+			nameCode[0] = (hashCode & 0xff000000) >> 24;//高位
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x00ff0000) >> 4;
+			nameCode[0] = (hashCode & 0x00ff0000) >> 16;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x0000ff00) >> 2;
+			nameCode[0] = (hashCode & 0x0000ff00) >> 8;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
@@ -198,15 +198,15 @@ int main(int argc,char * argv[]) {
 
 			uint32 hashCode = HashCode(code);
 			uint8* nameCode = (uint8*)malloc(sizeof(uint8));
-			nameCode[0] = (hashCode & 0xff000000) >> 6;//高位
+			nameCode[0] = (hashCode & 0xff000000) >> 24;//高位
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x00ff0000) >> 4;
+			nameCode[0] = (hashCode & 0x00ff0000) >> 16;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x0000ff00) >> 2;
+			nameCode[0] = (hashCode & 0x0000ff00) >> 8;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
@@ -257,15 +257,15 @@ int main(int argc,char * argv[]) {
 
 			uint32 hashCode = HashCode(code);
 			uint8* nameCode = (uint8*)malloc(sizeof(uint8));
-			nameCode[0] = (hashCode & 0xff000000) >> 6;//高位
+			nameCode[0] = (hashCode & 0xff000000) >> 24;//高位
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x00ff0000) >> 4;
+			nameCode[0] = (hashCode & 0x00ff0000) >> 16;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x0000ff00) >> 2;
+			nameCode[0] = (hashCode & 0x0000ff00) >> 8;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
@@ -295,15 +295,15 @@ int main(int argc,char * argv[]) {
 
 			uint32 hashCode = HashCode(code);
 			uint8* nameCode = (uint8*)malloc(sizeof(uint8));
-			nameCode[0] = (hashCode & 0xff000000) >> 6;//高位
+			nameCode[0] = (hashCode & 0xff000000) >> 24;//高位
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x00ff0000) >> 4;
+			nameCode[0] = (hashCode & 0x00ff0000) >> 16;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			nameCode[0] = (hashCode & 0x0000ff00) >> 2;
+			nameCode[0] = (hashCode & 0x0000ff00) >> 8;
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
@@ -362,36 +362,208 @@ int main(int argc,char * argv[]) {
 
 			fscanf(file, "%s", code);				//读取变量名
 			
-			int64 startPos = 0;							//计算要保存的内存地址的起始地址
-			//sscanf(code, "%x", &startPos);
-			startPos = HashCode8(code);
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
 			printf("字符串名:%s,长度:%d,hashcode:%x\n",code,strlen(code),startPos);
 
 			fscanf(file, "%s", code);				//读取 =
 			fscanf(file, "%s", code);				//读取字符常量的值
 
-			char* str = code;
+			char* str = code;						//字符串值
 			//int64 startPos = 0;
 			
-			int64 index = startPos;
+			int64 charIndex = 0;
 
 			int64 strs;
 
-			for (int j = 0; j < strlen(str);j++) {
+			for (uint8 j = 0; j < strlen(str);j++) {
 				if (str[j]==34) {
 					continue;
 				}
 				if (str[j]=='\0') {
 					break;
 				}
-				strs = wtm;
+				strs = STRING;
+				fwrite(&strs, sizeof(int64), 1, outFile);
+
+				strs = posH;
+				fwrite(&strs, sizeof(int64), 1, outFile);
+
+				strs = posL;
+				fwrite(&strs, sizeof(int64), 1, outFile);
+
+				strs = charIndex;
+				fwrite(&strs, sizeof(int64), 1, outFile);
+
+				strs = str[j];
+				fwrite(&strs, sizeof(int64), 1, outFile);
+
+				charIndex++;
+
+				/*strs = wtm;
 				fwrite(&strs, sizeof(int64), 1, outFile);
 				strs = index;
 				fwrite(&strs, sizeof(int64), 1, outFile);
 				strs = str[j];
 				fwrite(&strs, sizeof(int64), 1, outFile);
-				index++;
+				index++;*/
 			}
+
+		}
+
+		else if (strcmp(code,"strread")==0) {
+			//读取字符串到内存中
+			
+			data[i] = STRREADER;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+		}
+
+		else if (strcmp(code, "int") == 0) {
+			//读取字符串到内存中
+
+			data[i] = INT;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			//计算值
+
+			fscanf(file, "%s", code);				//读取=
+
+			fscanf(file, "%s", code);				//读取数值
+
+			int value = 0;
+			value = atoi(code);
+			printf("读取到的整形字符:%s,int值为:%d\n",code,value);
+
+			data[i] = (uint8)((value) >> 24);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value) >> 16);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value) >> 8);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value)&0xff);
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "intread") == 0) {
+			//读取字符串到内存中
+
+			data[i] = INTREADER;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+		}
+
+		else if (strcmp(code, "float") == 0) {
+			//读取字符串到内存中
+
+			data[i] = FLOAT;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			//计算值
+
+			fscanf(file, "%s", code);				//读取=
+
+			fscanf(file, "%s", code);				//读取数值
+
+			/*int value = 0;
+			value = atoi(code);*/
+
+			float num = 0;
+			sscanf(code, "%f", &num);
+
+			int value = *(int*)&num;
+
+			printf("读取到的整形字符:%s,int值为:%d\n", code, value);
+
+			data[i] = (uint8)((value) >> 24);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value) >> 16);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value) >> 8);
+			fwrite(data, sizeof(int64), 1, outFile);
+			data[i] = (uint8)((value) & 0xff);
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "floatread") == 0) {
+			//读取字符串到内存中
+
+			data[i] = FLOATREADER;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
 
 		}
 

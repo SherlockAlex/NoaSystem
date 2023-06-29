@@ -48,22 +48,12 @@ void InitOperatorMap(OperatorMap* map, int length)
 
 void InsertOperator2Map(OperatorMap* map, Operator op)
 {
-	/*map->operatorMap[map->count] = op;
-	map->count++;*/
-	printf("指令初始化成功:%x\n",op.adress);
+	printf("[warring]:指令初始化成功:%x\n",op.adress);
 	uint8 adress = op.adress;
 	map->operatorMap[adress] = op;
 }
 
-Operator * GetOperator(OperatorMap* map, uint8 adress) {
-	/*for (int i = 0; i < map->count; i++)
-	{
-		if(map->operatorMap[i].adress==adress)
-		{
-			return &(map->operatorMap[i]);
-		}
-	}
-	return nullptr;*/
-	//printf("指令地址:%x\n",adress);
+Operator * GetOperator(OperatorMap* map, uint8 adress) 
+{
 	return &(map->operatorMap[adress]);
 }

@@ -4,8 +4,8 @@ D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(249,11): warning C4
 D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(249,11): message : 请考虑在格式字符串中使用“%zd”
 D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(287,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
 D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(287,11): message : 请考虑在格式字符串中使用“%zd”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(368,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(368,11): message : 请考虑在格式字符串中使用“%zd”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(691,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(691,12): message : 请考虑在格式字符串中使用“%zd”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(371,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(371,11): message : 请考虑在格式字符串中使用“%zd”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(863,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\main.cpp(863,12): message : 请考虑在格式字符串中使用“%zd”
   NoaCompiler.vcxproj -> D:\Work\NoaSystem\NoaSystem\NoaCompiler\x64\Debug\NoaCompiler.exe

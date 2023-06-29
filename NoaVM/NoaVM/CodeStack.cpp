@@ -8,7 +8,7 @@
 
 void InitCodeStack(CodeStack* stack,int length)
 {
-	stack->count = 0;
+	stack->top = -1;
 	stack->codeIndex = (int64*)malloc(length*sizeof(int64));
 }
 
@@ -18,34 +18,36 @@ void IncreaseStack(CodeStack* stack) {
 
 void PushCodeStack(CodeStack* stack, int64 code)
 {
-	//入栈
-	//printf("入栈成功\n");
-	if (stack->count<=0) {
-		stack->codeIndex[0] = code;
+
+	if (stack->top==1023)
+	{
+		printf("[error]:函数入栈失败,栈满\n");
 		return;
 	}
-	for (int i = stack->count - 1; i >= 0;i--) {
-		stack->codeIndex[i + 1] = stack->codeIndex[i];
-	}
-	stack->codeIndex[0] = code;
-	stack->count++;
-	return;
+	stack->top = stack->top + 1;
+	stack->codeIndex[stack->top] = code;
+
 }
 int64 PopCodeStack(CodeStack* stack)
 {
 	//出栈
-	if (stack->count<=0) {
-		return 0;
+
+	if (stack->top==-1)
+	{
+		printf("[error]:当前栈为空\n");
+		return -1;
 	}
-	int64 code = stack->codeIndex[0];
-	for (int i = 0; i < stack->count - 1;i++) {
-		stack->codeIndex[i] = stack->codeIndex[i + 1];
-	}
-	stack->count--;
+	int64 code = stack->codeIndex[stack->top];
+	stack->top = stack->top - 1;
 	return code;
+
 }
 extern int64 GetHeadOfStack(CodeStack* stack)
 {
 	//获取栈顶
-	return stack->codeIndex[0];
+	if (stack->top==-1) {
+		printf("[error]:访问栈顶失败\n");
+		return -1;
+	}
+	return stack->codeIndex[stack->top];
 }

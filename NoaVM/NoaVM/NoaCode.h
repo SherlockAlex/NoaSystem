@@ -25,17 +25,17 @@
 #define rfm     0x13
 #define ELSE    0x14             //和if相反
 
-
-//定义操作数
-#define _data 0xda
-
 //定义数据类型
-#define byte    0x13		//1B
-#define SHORT   0x14		//2B
-#define INT     0x15		//4B
-#define FLOATE	0x16		//4B
-#define LONG    0x17		//8B
-#define DOUBLE  0x18		//8B
+#define BYTE		0x15		//1B
+#define SHORT		0x16		//2B
+#define INT			0x17		//4B
+#define FLOAT		0x18		//4B
+#define LONG		0x19		//8B
+#define DOUBLE		0x1a		//8B
+#define STRING		0x1b		//1B
+#define STRREADER	0x1c
+#define INTREADER   0x1d
+#define FLOATREADER 0x1e
 
 
 #define quit 0xe0
