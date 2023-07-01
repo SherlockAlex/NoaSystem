@@ -9,7 +9,7 @@ int64 HashCode(uint8* key, int64 length,int64 min,int64 max)
 	hash[0] = key[0];
 	int64 i = 1;
 	for (i = 1; i < length; i++) {
-		hash[i] = (hash[i - 1] * base + key[i]) % mod;
+		hash[i] = ((hash[i - 1] * base) + key[i]) % mod;
 	}
 
 	int64 hash2[4];
@@ -18,7 +18,7 @@ int64 HashCode(uint8* key, int64 length,int64 min,int64 max)
 	hash2[0] = hash[i - 1];
 	int64 j = 1;
 	for (j = 1; j < length; j++) {
-		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) & mod2;
+		hash2[j] = ((hash2[j - 1] * base2) + key[length - 1 - j]) & mod2;
 	}
 
 	int64 hash3[4];				//key最长只有50个字符
@@ -27,7 +27,7 @@ int64 HashCode(uint8* key, int64 length,int64 min,int64 max)
 	hash3[0] = hash2[j-1];
 	int64 k = 1;
 	for (k = 1; k < length; k++) {
-		hash3[k] = (hash3[k - 1] * base3 + key[k]) % mod3;
+		hash3[k] = ((hash3[k - 1] * base3) + key[k]) % mod3;
 	}
 
 	return hash3[k - 1] + min;//返回值不能为0

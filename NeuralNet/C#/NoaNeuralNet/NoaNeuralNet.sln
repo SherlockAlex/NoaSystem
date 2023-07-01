@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoaNeuralNet", "NoaNeuralNet\NoaNeuralNet.csproj", "{70D03797-6FA8-4B59-8D9F-ABB526646896}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70D03797-6FA8-4B59-8D9F-ABB526646896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70D03797-6FA8-4B59-8D9F-ABB526646896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70D03797-6FA8-4B59-8D9F-ABB526646896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70D03797-6FA8-4B59-8D9F-ABB526646896}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {637C3494-7D8C-482B-9BC1-D3601FD0B2AD}
+	EndGlobalSection
+EndGlobal

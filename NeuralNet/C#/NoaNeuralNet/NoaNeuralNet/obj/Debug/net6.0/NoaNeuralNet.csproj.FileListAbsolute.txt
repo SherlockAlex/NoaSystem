@@ -1,0 +1,12 @@
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\bin\Debug\net6.0\NoaNeuralNet.deps.json
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\bin\Debug\net6.0\NoaNeuralNet.dll
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\bin\Debug\net6.0\NoaNeuralNet.pdb
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.csproj.AssemblyReference.cache
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.AssemblyInfoInputs.cache
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.AssemblyInfo.cs
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.csproj.CoreCompileInputs.cache
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.dll
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\refint\NoaNeuralNet.dll
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\NoaNeuralNet.pdb
+D:\Work\NoaSystem\NoaSystem\NeuralNet\C#\NoaNeuralNet\NoaNeuralNet\obj\Debug\net6.0\ref\NoaNeuralNet.dll

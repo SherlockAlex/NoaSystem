@@ -92,6 +92,7 @@ int CreateOperator(OperatorMap * map)
 	InitOperator(INTREADER,ReadIntFromPool,map);
 	InitOperator(FLOAT,WriteFloat2Pool,map);
 	InitOperator(FLOATREADER, ReadFloatFromPool, map);
+	InitOperator(OR,NoaOR,map);
 	return 0;
 }
 
@@ -167,9 +168,7 @@ int Run(NoaFile* file) {
 
 
 	pc = file->data[pcIndex];
-
 	//printf("初始的指令为:%x\n",pc);
-
 	uint8 pramater1 = 0;
 	uint8 pramater2 = 0;
 	uint8 pramater3 = 0;
@@ -194,10 +193,11 @@ int Run(NoaFile* file) {
 	bool isRunning = true;
 	//int counter = 0;
 
-	clock_t startTime = clock();
-	printf("\n[warring]:开始执行Noa文件\n");
+	//printf("\n[warring]:开始执行Noa文件\n");
+	//clock_t startTime = clock();
 	while (isRunning)
 	{
+		//运行速度太慢
 		pc = file->data[pcIndex];
 		if (pc == quit) 
 		{
@@ -237,9 +237,8 @@ int Run(NoaFile* file) {
 
 	}
 
-	std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
+	//std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
 
-	//printf("开始释放计算资源\n");
 	//释放计算机资源
 	free(opMap.operatorMap);
 	free(ram->buffer);

@@ -87,6 +87,7 @@ void PrintRegister(
 			break;
 		case 0x82:
 			//打印浮点型
+			//速度太慢
 			value = *(float*)&noaRegister[paramer1];
 			printf("%f", value);
 			break;
@@ -691,7 +692,7 @@ void WriteInt2Pool(
 	int value = 0;
 	value = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
 	intPool->buffer[adress] = value;
-	printf("[warring]:写入对象池整型数据:%d,十六进制为:%x %x %x %x\n",value,paramer3,paramer4,paramer5,paramer6);
+	//printf("[warring]:写入对象池整型数据:%d,十六进制为:%x %x %x %x\n",value,paramer3,paramer4,paramer5,paramer6);
 	(*pcIndex) = (*pcIndex) + 7;
 }
 
@@ -729,7 +730,7 @@ void ReadIntFromPool(
 
 	int64 adress = HashCode(code, 2, 0, 65535);
 	int value = intPool->buffer[adress];
-	printf("[warring]:内存整型数据:%d\n", value);
+	//printf("[warring]:内存整型数据:%d\n", value);
 	//printf("[warring]:读取到的字符串常量为:%s\n",str);
 
 	//将字符串保存到一个特定的位置，即ram中
@@ -779,7 +780,7 @@ void WriteFloat2Pool(
 	value = *(float*)&valueInt;
 
 	floatPool->buffer[adress] = value;
-	printf("[warring]:写入对象池浮点型数据:%f,十六进制为:%x %x %x %x\n", value, paramer3, paramer4, paramer5, paramer6);
+	//printf("[warring]:写入对象池浮点型数据:%f,十六进制为:%x %x %x %x\n", value, paramer3, paramer4, paramer5, paramer6);
 	(*pcIndex) = (*pcIndex) + 7;
 }
 
@@ -817,10 +818,40 @@ void ReadFloatFromPool(
 
 	int64 adress = HashCode(code, 2, 0, 65535);
 	float value = floatPool->buffer[adress];
-	printf("[warring]:内存浮点型数据:%f\n", value);
+	//printf("[warring]:内存浮点型数据:%f\n", value);
 	//printf("[warring]:读取到的字符串常量为:%s\n",str);
 
 	//将字符串保存到一个特定的位置，即ram中
 	ram->buffer[0] = *(int *) &value;
 	(*pcIndex) = (*pcIndex) + 3;
+}
+
+void NoaOR(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	noaRegister[paramer1] = (noaRegister[paramer1] | noaRegister[paramer2]);
 }

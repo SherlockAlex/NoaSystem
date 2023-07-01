@@ -10,6 +10,10 @@ void InitCodeStack(CodeStack* stack,int length)
 {
 	stack->top = -1;
 	stack->codeIndex = (int64*)malloc(length*sizeof(int64));
+	if (stack->codeIndex == nullptr)
+	{
+		printf("[error]:´´½¨Õ»Ê§°Ü\n");
+	}
 }
 
 void IncreaseStack(CodeStack* stack) {

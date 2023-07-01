@@ -44,11 +44,15 @@ void InitOperatorMap(OperatorMap* map, int length)
 {
 	map->count = 0;
 	map->operatorMap = (Operator*)malloc(length * sizeof(Operator));
+	if (map->operatorMap==nullptr)
+	{
+		printf("[error]:初始化指令表失败\n");
+	}
 }
 
 void InsertOperator2Map(OperatorMap* map, Operator op)
 {
-	printf("[warring]:指令初始化成功:%x\n",op.adress);
+	//printf("[warring]:指令初始化成功:%x\n",op.adress);
 	uint8 adress = op.adress;
 	map->operatorMap[adress] = op;
 }
