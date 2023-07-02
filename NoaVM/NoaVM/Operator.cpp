@@ -40,10 +40,12 @@ void InitOperator
 	InsertOperator2Map(operatorMap, operatorNode);
 }
 
+Operator ops[OPMAPSIZE];
 void InitOperatorMap(OperatorMap* map, int length)
 {
 	map->count = 0;
-	map->operatorMap = (Operator*)malloc(length * sizeof(Operator));
+	//map->operatorMap = (Operator*)malloc(length * sizeof(Operator));
+	map->operatorMap = ops;
 	if (map->operatorMap==nullptr)
 	{
 		printf("[error]:初始化指令表失败\n");

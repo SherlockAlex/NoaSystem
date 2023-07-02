@@ -421,7 +421,7 @@ void Compile(FILE * file,FILE* outFile) {
 
 			int value = 0;
 			//value = atoi(code);
-			sscanf(code, "%x", &value);
+			sscanf(code, "%d", &value);
 			printf("读取到的整形字符:%s,int值为:%d\n", code, value);
 
 			data[i] = (uint8)((value) >> 24);
@@ -430,7 +430,7 @@ void Compile(FILE * file,FILE* outFile) {
 			fwrite(data, sizeof(int64), 1, outFile);
 			data[i] = (uint8)((value) >> 8);
 			fwrite(data, sizeof(int64), 1, outFile);
-			data[i] = (uint8)((value) & 0xff);
+			data[i] = (uint8)((value));
 			fwrite(data, sizeof(int64), 1, outFile);
 		}
 

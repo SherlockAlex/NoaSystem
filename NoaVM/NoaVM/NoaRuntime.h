@@ -6,6 +6,10 @@
 #include "string.h"
 #include "RAM.h"
 
+#define OPMAPSIZE 256
+#define CALLINDEXSIZE 1024
+#define FUNCTABLESIZE 4096
+
 //×Ö·û´®³£Á¿³Ø
 extern StringPool* stringPool;
 

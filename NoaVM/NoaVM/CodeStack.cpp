@@ -6,10 +6,14 @@
 * 为什么需要函数栈的概念，首先第一次加载程序，函数的起始地址会被入栈，并实时发生更新，当
 */
 
+
+
+int64 codeIndexBuffer[CALLINDEXSIZE];
 void InitCodeStack(CodeStack* stack,int length)
 {
 	stack->top = -1;
-	stack->codeIndex = (int64*)malloc(length*sizeof(int64));
+	stack->codeIndex = codeIndexBuffer;
+	//stack->codeIndex = (int64*)malloc(length*sizeof(int64));
 	if (stack->codeIndex == nullptr)
 	{
 		printf("[error]:创建栈失败\n");

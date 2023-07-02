@@ -10,8 +10,16 @@ int main(int argc,char * argv[]) {
 		return -1;
 	}
 
+	//const char* outFilePath = ".\\test.noa";
+
+	const char* outFilePath = argv[2];
+	if (outFilePath==nullptr) {
+		printf("请输入输出文件\n");
+		return -1;
+	}
+
 	//将文件输出为noa文件
-	FILE* outFile = fopen(".\\test.noa", "w");
+	FILE* outFile = fopen(outFilePath, "w");
 	if (outFile==nullptr) {
 		printf("编译文件失败\n");
 		return -1;
@@ -19,7 +27,7 @@ int main(int argc,char * argv[]) {
 	fwrite(header, sizeof(int64), 3, outFile);
 	fclose(outFile);
 
-	outFile = fopen(".\\test.noa", "a+");
+	outFile = fopen(outFilePath, "a+");
 
 	if (outFile == nullptr) {
 		printf("编译文件失败\n");

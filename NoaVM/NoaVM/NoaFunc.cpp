@@ -596,7 +596,7 @@ void WriteString2Pool(
 	code[1] = paramer2;
 
 	
-	int64 adress = HashCode(code,2,0,65535);
+	int64 adress = HashCode(code,2,0,STRINGPOOLSIZE-1);
 	int charIndex = (int)paramer3;
 	//printf("[warring]:保存字符串到常量池中,字符index:%d,字符为:%c\n",charIndex, paramer4);
 	if (stringPool->buffer[adress]==nullptr)
@@ -641,7 +641,7 @@ void ReadFromString(
 	code[0] = paramer1;
 	code[1] = paramer2;
 
-	int64 adress = HashCode(code,2,0,65535);
+	int64 adress = HashCode(code,2,0, STRINGPOOLSIZE - 1);
 	char* str = stringPool->buffer[adress];
 	
 	//printf("[warring]:读取到的字符串常量为:%s\n",str);
@@ -687,9 +687,10 @@ void WriteInt2Pool(
 	code[0] = paramer1;
 	code[1] = paramer2;
 
-	int64 adress = HashCode(code, 2, 0, 65535);
+	int64 adress = HashCode(code, 2, 0, INTPOOLSIZE-1);
 
 	int value = 0;
+	//value = (int)((((int)paramer3) << 24)+(((int)paramer4) << 16) + (((int)paramer5) << 8) + ((int)paramer6));
 	value = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
 	intPool->buffer[adress] = value;
 	//printf("[warring]:写入对象池整型数据:%d,十六进制为:%x %x %x %x\n",value,paramer3,paramer4,paramer5,paramer6);
@@ -728,10 +729,9 @@ void ReadIntFromPool(
 	code[0] = paramer1;
 	code[1] = paramer2;
 
-	int64 adress = HashCode(code, 2, 0, 65535);
+	int64 adress = HashCode(code, 2, 0, INTPOOLSIZE - 1);
 	int value = intPool->buffer[adress];
 	//printf("[warring]:内存整型数据:%d\n", value);
-	//printf("[warring]:读取到的字符串常量为:%s\n",str);
 
 	//将字符串保存到一个特定的位置，即ram中
 	ram->buffer[0] = value;
@@ -771,7 +771,7 @@ void WriteFloat2Pool(
 	code[0] = paramer1;
 	code[1] = paramer2;
 
-	int64 adress = HashCode(code, 2, 0, 65535);
+	int64 adress = HashCode(code, 2, 0, FLOATPOOLSIZE - 1);
 
 	int valueInt = 0;
 	valueInt = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
@@ -816,7 +816,7 @@ void ReadFloatFromPool(
 	code[0] = paramer1;
 	code[1] = paramer2;
 
-	int64 adress = HashCode(code, 2, 0, 65535);
+	int64 adress = HashCode(code, 2, 0, FLOATPOOLSIZE - 1);
 	float value = floatPool->buffer[adress];
 	//printf("[warring]:内存浮点型数据:%f\n", value);
 	//printf("[warring]:读取到的字符串常量为:%s\n",str);

@@ -4,6 +4,12 @@
 #include "type.h"
 #include <string>
 
+#define STRINGPOOLSIZE 65535
+#define INTPOOLSIZE 65535
+#define FLOATPOOLSIZE 65535
+
+#define RAMSIZE 128
+
 extern int64 noaRegister[7];//¼Ä´æÆ÷
 
 //ÔËÐÐÄÚ´æ

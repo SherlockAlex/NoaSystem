@@ -49,8 +49,6 @@ NoaFile * LoadFile(const char* filePath)
 	if (!isNoaFile)
 	{
 		free(codes);
-		codes = nullptr;
-		free(codes);
 		return nullptr;
 	}
 	NoaFile* noaFile = InitNoaFile(codes,size);
@@ -63,7 +61,7 @@ int64 GetMainFuncIndex(FuncTable * table)
 	//pc指向函数第一条指令的位置，fc一个字节标志，00 00 00 00表示地址
 	int64 pcIndex = -1;
 	uint8 code[4] = {_start,_start,_start,_start};
-	int64 hashCode = HashCode(code,4,0,4096);
+	int64 hashCode = HashCode(code,4,0, FUNCTABLESIZE);
 	FuncNode * mainFunc = GetFunc(table, hashCode);
 	if (mainFunc!=nullptr)
 	{
@@ -113,12 +111,15 @@ void CreateFuncTable(NoaFile * file,FuncTable * table) {
 
 void InitConstantPool() {
 	//初始化常量池
-	stringPool = InitStringPool(65535);
-	intPool = InitIntPool(65535);
-	floatPool = InitFloatPool(65535);
+	stringPool = InitStringPool(STRINGPOOLSIZE);
+	intPool = InitIntPool(INTPOOLSIZE);
+	floatPool = InitFloatPool(FLOATPOOLSIZE);
 }
 
 int Run(NoaFile* file) {
+
+
+	
 
 	if (file==nullptr)
 	{
@@ -126,22 +127,23 @@ int Run(NoaFile* file) {
 		return -1;
 	}
 	//运行内存：(1024*1024)Byte
-	RAM * ram = InitRAM(512);
-
+	RAM * ram = InitRAM(RAMSIZE);
+	
 	//初始化指令表
 	OperatorMap opMap;
 	CodeStack callStack;
-	InitOperatorMap(&opMap, 255);
+	InitOperatorMap(&opMap, OPMAPSIZE);
+
 	CreateOperator(&opMap);
-
+	
 	//初始化函数栈
-	InitCodeStack(&callStack,1024);
+	InitCodeStack(&callStack,CALLINDEXSIZE);
 	int64 pcIndex = 0;
-
+	
 	//初始化函数表
 	InitFuncTable(&funcTable);
 	CreateFuncTable(file,&funcTable);
-
+	
 	//初始化常量池
 	InitConstantPool();
 
@@ -150,18 +152,11 @@ int Run(NoaFile* file) {
 	if (pcIndex<0)
 	{
 		printf("[error]:无法找到程序入口地址: .Main:\n");
-		free(opMap.operatorMap);
-		free(ram->buffer);
 		free(ram);
 		free(file->data);
 		free(file);
-		free(callStack.codeIndex);
-		free(funcTable.table);
-		free(stringPool->buffer);
 		free(stringPool);
-		free(intPool->buffer);
 		free(intPool);
-		free(floatPool->buffer);
 		free(floatPool);
 		return -1;
 	}
@@ -240,17 +235,11 @@ int Run(NoaFile* file) {
 	//std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
 
 	//释放计算机资源
-	free(opMap.operatorMap);
-	free(ram->buffer);
 	free(ram);
 	free(file->data);
 	free(file);
-	free(callStack.codeIndex);
-	free(stringPool->buffer);
 	free(stringPool);
-	free(intPool->buffer);
 	free(intPool);
-	free(floatPool->buffer);
 	free(floatPool);
 	//printf("释放资源完成\n");
 	return 0;

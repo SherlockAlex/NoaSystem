@@ -4,31 +4,40 @@
 
 int64 noaRegister[7] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
+int64 ramBuffer[RAMSIZE];
+
 RAM * InitRAM(int ramSize) {
 	RAM* ram = (RAM*)malloc(sizeof(RAM));
 	ram->bufferSize = ramSize;
-	ram->buffer = (int64*)malloc(ramSize * sizeof(int64));
+	ram->buffer = ramBuffer;
+	//ram->buffer = (int64*)malloc(ramSize * sizeof(int64));
 	return ram;
 }
 
+char* stringBuffer[STRINGPOOLSIZE];					//静态分配常量池大小
 StringPool* InitStringPool(int bufferSize) {
 	StringPool* stringPool = (StringPool*)malloc(sizeof(StringPool));
 	stringPool->bufferSize = bufferSize;
-	stringPool->buffer = (char**)malloc(bufferSize * sizeof(char*));
+	stringPool->buffer = stringBuffer;
+	//stringPool->buffer = (char**)malloc(bufferSize * sizeof(char*));
 	return stringPool;
 }
 
+int intBuffer[INTPOOLSIZE];
 IntPool* InitIntPool(int bufferSize) {
 	IntPool* intPool = (IntPool*)malloc(sizeof(IntPool));
 	intPool->bufferSize = bufferSize;
-	intPool->buffer = (int*)malloc(bufferSize * sizeof(int));
+	intPool->buffer = intBuffer;
+	//intPool->buffer = (int*)malloc(bufferSize * sizeof(int));
 	return intPool;
 }
 
+float floatBuffer[FLOATPOOLSIZE];
 FloatPool* InitFloatPool(int bufferSize) {
 	FloatPool* pool = (FloatPool*)malloc(sizeof(FloatPool));
 	pool->bufferSize = bufferSize;
-	pool->buffer = (float*)malloc(bufferSize * sizeof(float));
+	pool->buffer = floatBuffer;
+	//pool->buffer = (float*)malloc(bufferSize * sizeof(float));
 	return pool;
 }
 
