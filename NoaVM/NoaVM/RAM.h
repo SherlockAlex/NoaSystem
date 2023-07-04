@@ -4,13 +4,13 @@
 #include "type.h"
 #include <string>
 
-#define STRINGPOOLSIZE 65535
-#define INTPOOLSIZE 65535
-#define FLOATPOOLSIZE 65535
+#define STRINGPOOLSIZE 65536
+#define INTPOOLSIZE 65536
+#define FLOATPOOLSIZE 65536
 
-#define RAMSIZE 128
+#define RAMSIZE 256
 
-extern int64 noaRegister[7];//¼Ä´æÆ÷
+extern int64 noaRegister[14];//¼Ä´æÆ÷
 
 //ÔËÐÐÄÚ´æ
 typedef struct RAM {

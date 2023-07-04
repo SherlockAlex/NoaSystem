@@ -72,6 +72,11 @@ void Compile(FILE * file,FILE* outFile) {
 
 		}
 
+		else if (strcmp(code, "sav") == 0)
+		{
+			data[i] = SAV;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
 
 		else if (strcmp(code, "outstr") == 0)
 		{
@@ -81,6 +86,11 @@ void Compile(FILE * file,FILE* outFile) {
 		else if (strcmp(code, "out") == 0)
 		{
 			data[i] = prt;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "in") == 0)
+		{
+			data[i] = IN;
 			fwrite(data, sizeof(int64), 1, outFile);
 		}
 		else if (strcmp(code, "add") == 0)
@@ -280,7 +290,7 @@ void Compile(FILE * file,FILE* outFile) {
 
 		}
 
-		else if (strcmp(code, "compare") == 0)
+		else if (strcmp(code, "cmp") == 0)
 		{
 			data[i] = CMP;
 			fwrite(data, sizeof(int64), 1, outFile);
@@ -316,6 +326,83 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = qx;
 			fwrite(data, sizeof(int64), 1, outFile);
 		}
+		else if (strcmp(code, "return") == 0)
+		{
+			data[i] = returnx;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "xx") == 0)
+		{
+			data[i] = xx;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "yx") == 0)
+		{
+			data[i] = yx;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "zx") == 0)
+		{
+			data[i] = zx;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "ox") == 0)
+		{
+			data[i] = ox;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "px") == 0)
+		{
+			data[i] = px;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "rx") == 0)
+		{
+			data[i] = rx;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code ,"==") == 0)
+		{
+			data[i] = 0x00;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, ">") == 0)
+		{
+			data[i] = 0x01;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "<") == 0)
+		{
+			data[i] = 0x02;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, ">=") == 0)
+		{
+			data[i] = 0x03;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "<=") == 0)
+		{
+			data[i] = 0x04;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "!=") == 0)
+		{
+			data[i] = 0x05;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		
+		else if (strcmp(code,"non") == 0)
+		{
+			data[i] = NON;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
 		else if (strcmp(code, "lopc") == 0)
 		{
 			//循环计数器
@@ -371,6 +458,22 @@ void Compile(FILE * file,FILE* outFile) {
 				charIndex++;
 			}
 
+			strs = STRING;
+			fwrite(&strs, sizeof(int64), 1, outFile);
+
+			strs = posH;
+			fwrite(&strs, sizeof(int64), 1, outFile);
+
+			strs = posL;
+			fwrite(&strs, sizeof(int64), 1, outFile);
+
+			strs = charIndex;
+			fwrite(&strs, sizeof(int64), 1, outFile);
+
+			strs = '\0';
+			fwrite(&strs, sizeof(int64), 1, outFile);
+
+
 		}
 
 		else if (strcmp(code, "strread") == 0) {
@@ -393,6 +496,45 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = posL;
 			fwrite(data, sizeof(int64), 1, outFile);
 
+		}
+
+		else if (strcmp(code, "intwrite") == 0) {
+			//读取字符串到内存中
+
+			data[i] = INTWRITE;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			//计算值
+
+			//fscanf(file, "%s", code);				//读取数值
+
+			//int value = 0;
+			////value = atoi(code);
+			//sscanf(code, "%d", &value);
+			//printf("读取到的整形字符:%s,int值为:%d\n", code, value);
+
+			//data[i] = (uint8)((value) >> 24);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value) >> 16);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value) >> 8);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value));
+			//fwrite(data, sizeof(int64), 1, outFile);
 		}
 
 		else if (strcmp(code, "int") == 0) {
@@ -455,6 +597,64 @@ void Compile(FILE * file,FILE* outFile) {
 			fwrite(data, sizeof(int64), 1, outFile);
 
 		}
+		else if (strcmp(code,"intres")==0)
+		{
+			data[i] = INTREGSTER;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+
+		else if (strcmp(code, "floatwrite") == 0) {
+			//读取字符串到内存中
+
+			data[i] = FLOATWRITE;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			//计算值
+
+			//fscanf(file, "%s", code);				//读取数值
+
+			//int value = 0;
+			////value = atoi(code);
+			//sscanf(code, "%d", &value);
+			//printf("读取到的整形字符:%s,int值为:%d\n", code, value);
+
+			//data[i] = (uint8)((value) >> 24);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value) >> 16);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value) >> 8);
+			//fwrite(data, sizeof(int64), 1, outFile);
+			//data[i] = (uint8)((value));
+			//fwrite(data, sizeof(int64), 1, outFile);
+		}
 
 		else if (strcmp(code, "float") == 0) {
 			//读取字符串到内存中
@@ -504,6 +704,28 @@ void Compile(FILE * file,FILE* outFile) {
 			//读取字符串到内存中
 
 			data[i] = FLOATREADER;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			fscanf(file, "%s", code);				//读取变量名
+			short startPos = 0;						//计算要保存的内存地址的起始地址
+			//startPos = HashCode8(code);
+			startPos = HashCode16(code);				//字符串再常量池中的地址
+			//计算起始地址的高位和地位
+			uint8 posL = (uint8)(startPos & 0xff);
+			uint8 posH = (uint8)((startPos >> 8) & 0xff);
+
+			data[i] = posH;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+			data[i] = posL;
+			fwrite(data, sizeof(int64), 1, outFile);
+
+		}
+
+		else if (strcmp(code, "floatres") == 0) {
+			//读取字符串到内存中
+
+			data[i] = FLOATREGSTER;
 			fwrite(data, sizeof(int64), 1, outFile);
 
 			fscanf(file, "%s", code);				//读取变量名
@@ -805,12 +1027,20 @@ void Compile(FILE * file,FILE* outFile) {
 		else
 		{
 			//数字类型
-			if (code[0] == '0' && code[1] == 'x' || isNum(code))
+			if (code[0] == '0' && code[1] == 'x')
 			{
 				int num = 0;
 				sscanf(code, "%x", &num);
 				data[i] = num;
 			}
+
+			else if (isNum(code))
+			{
+				int num = 0;
+				sscanf(code, "%d", &num);
+				data[i] = num;
+			}
+
 			//字符串
 			else
 			{

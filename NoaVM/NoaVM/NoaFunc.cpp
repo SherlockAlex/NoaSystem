@@ -1,14 +1,10 @@
 #include "NoaFunc.h"
-#include "stdio.h"
 #include "NoaCode.h"
 #include "type.h"
 #include "NoaMath.h"
+#include <iostream>
 
-
-//void version(RAM* ram, int64 dpIndex, int64 dpLength, int* pcIndex) {
-//	printf("NoaVM version:0.0.1\n");
-//}
-//
+using namespace std;
 
 void PrintString(
 	RAM* ram,						//内存模拟
@@ -97,6 +93,67 @@ void PrintRegister(
 	(*pcIndex) = (*pcIndex) + 3;
 }
 
+void ScanCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	int   valueInt = 0;
+	float valueFloat = 0;
+	char  valueChar;
+	//读取数据到寄存器
+	switch (paramer2)
+	{
+	case 0x80:
+		//读取字符
+		//scanf("%c", &noaRegister[paramer1]);
+		cin >> valueChar;
+		noaRegister[paramer1] = valueChar;
+		break;
+	case 0x81:
+		//打印整形
+		//scanf("%d", &noaRegister[paramer1]);
+		cin >> valueInt;
+		noaRegister[paramer1] = valueInt;
+		break;
+	case 0x82:
+		//打印浮点型
+		//速度太慢
+		//scanf("%f", &value);
+		cin >> valueFloat;
+		noaRegister[paramer1] = *(int*)&valueFloat;
+		//value = *(float*)&noaRegister[paramer1];
+		break;
+	default:
+		cin >> noaRegister[paramer1];
+		break;
+	}
+	//printf("读取数据完成,数据为:%c\n",noaRegister[paramer1]);
+	(*pcIndex) = (*pcIndex) + 3;
+}
+
 void MoveToRegister(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -131,53 +188,8 @@ void MoveToRegister(
 	(*pcIndex) = (*pcIndex) + 3;
 	
 }
-//
 
-uint8 AddB(uint8 a, uint8 b) {
-	uint8 y = a;
-	while (b) {
-		uint8 tmp = a;
-		a = a ^ b;
-		b = (tmp & b) << 1;
-		y = a;
-	}
-	return y;
-}
-
-void AddByte(
-	RAM* ram,						//内存模拟
-	uint8 paramer1,
-	uint8 paramer2,
-	uint8 paramer3,
-	uint8 paramer4,
-	uint8 paramer5,
-	uint8 paramer6,
-	uint8 paramer7,
-	uint8 paramer8,
-	uint8 paramer9,
-	uint8 paramer10,
-	uint8 paramer11,
-	uint8 paramer12,
-	uint8 paramer13,
-	uint8 paramer14,
-	uint8 paramer15,
-	uint8 paramer16,
-	uint8 paramer17,
-	uint8 paramer18,
-	uint8 paramer19,
-	uint8 paramer20,
-
-	int64* pcIndex,
-	NoaFile* file,
-	CodeStack* callStack
-)
-{
-	//使用add前，必须先使用mov指令将数字放到寄存器内部
-	noaRegister[paramer1] = AddB(noaRegister[paramer1],noaRegister[paramer2]);
-	(*pcIndex) = (*pcIndex) + 3;
-}
-
-void Sub(
+void SaveRegister(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
 	uint8 paramer2,
@@ -204,36 +216,11 @@ void Sub(
 	NoaFile* file,
 	CodeStack* callStack
 ) {
-	noaRegister[paramer1] -= noaRegister[paramer2];
-	(*pcIndex) = ((*pcIndex) + 3);
+	noaRegister[paramer1] = noaRegister[paramer2];
+	(*pcIndex) = (*pcIndex) + 3;
 }
 
-//
-//void ASubB(RAM* ram, int64 adresss1, int64 adresss2, int* pcIndex)
-//{
-//	//减法操作
-//	noaRegister[adresss1] -= noaRegister[adresss2];
-//}
-//
-//void noaAnd(RAM* ram, int64 adress1, int64 adress2, int* pcIndex)
-//{
-//	//与运算
-//	noaRegister[adress1] = (noaRegister[adress1] & noaRegister[adress2]);
-//}
-//
-//void heapToRAM(RAM* ram, int64 pramater1, int64 data, int* pcIndex)
-//{	//mov,ecx,pos
-//	//mov,edx,len
-//	//mst,
-//	/*int64 heapPos = noaRegister[2];
-//	int64 length = noaRegister[3];
-//	for(int64 i=0;i<length;i++)
-//	{
-//		ram->buffer[i] = noaHeap[heapPos][i];
-//	}*/
-//	
-//}
-//
+
 void WriteToRAM(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -263,7 +250,7 @@ void WriteToRAM(
 )
 {
 	//用于保存变量用的
-	ram->buffer[paramer1] = paramer2;
+	ram->buffer[paramer1] = noaRegister[paramer2];
 	(*pcIndex) = (*pcIndex) + 3;
 }
 
@@ -300,26 +287,6 @@ extern void ReadFromRAM(
 	noaRegister[paramer1] = ram->buffer[paramer2];
 	(*pcIndex) = (*pcIndex) + 3;
 }
-
-//
-//void noaOr(RAM* ram, int64 adress1, int64 adress2, int* pcIndex)
-//{
-//	noaRegister[adress1] = (noaRegister[adress1] | noaRegister[adress2]);
-//}
-//
-//void multiply(RAM* ram, int64 adress1, int64 adress2, int* pcIndex) {
-//	noaRegister[adress1] *= noaRegister[adress2];
-//}
-//void divide(RAM* ram, int64 adress1, int64 adress2, int* pcIndex) {
-//	if (noaRegister[adress2]==0) {
-//		noaRegister[adress1] = 0xffffffff;
-//		return;
-//	}
-//
-//	noaRegister[adress1] /= noaRegister[adress2];
-//
-//}
-//
 
 //规定函数的地址码和数据的地址码都为4B
 
@@ -361,7 +328,7 @@ void CallCode(
 	code[1] = paramer2;
 	code[2] = paramer3;
 	code[3] = paramer4;
-	int64 funcHashCode = HashCode(code,4,0,4096);
+	int64 funcHashCode = HashCode(code,4,0, FUNCTABLESIZE - 1);
 	FuncNode* func = GetFunc(&funcTable,funcHashCode);
 	//函数位置定位搜索算法
 	int64 funcIndex = func->pcIndex;
@@ -449,7 +416,7 @@ extern void LoopCode(
 	code[1] = paramer2;
 	code[2] = paramer3;
 	code[3] = paramer4;
-	int64 funcHashCode = HashCode(code, 4, 0, 4096);
+	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE - 1);
 	FuncNode* func = GetFunc(&funcTable, funcHashCode);
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
@@ -500,7 +467,7 @@ void IFCode(
 	code[1] = paramer3;
 	code[2] = paramer4;
 	code[3] = paramer5;
-	int64 funcHashCode = HashCode(code, 4, 0, 4096);
+	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE-1);
 	FuncNode* func = GetFunc(&funcTable, funcHashCode);
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
@@ -554,7 +521,7 @@ void ELSECode(
 	code[1] = paramer3;
 	code[2] = paramer4;
 	code[3] = paramer5;
-	int64 funcHashCode = HashCode(code, 4, 0, 4096);
+	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE-1);
 	FuncNode* func = GetFunc(&funcTable, funcHashCode);
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
@@ -697,6 +664,47 @@ void WriteInt2Pool(
 	(*pcIndex) = (*pcIndex) + 7;
 }
 
+void RegisterInt2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//地址H
+	uint8 paramer2,					//地址L
+	uint8 paramer3,					//register
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, INTPOOLSIZE - 1);
+
+	//int value = 0;
+	////value = (int)((((int)paramer3) << 24)+(((int)paramer4) << 16) + (((int)paramer5) << 8) + ((int)paramer6));
+	//value = (int)(((paramer3 & 0xff) << 24) | ((paramer4 & 0xff) << 16) | ((paramer5 & 0xff) << 8) | (paramer6 & 0xff));
+	intPool->buffer[adress] = noaRegister[paramer3];
+	//printf("[warring]:写入对象池整型数据:%d,十六进制为:%x %x %x %x\n",value,paramer3,paramer4,paramer5,paramer6);
+	(*pcIndex) = (*pcIndex) + 4;
+}
+
 void ReadIntFromPool(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,					//变量地址H
@@ -737,6 +745,88 @@ void ReadIntFromPool(
 	ram->buffer[0] = value;
 	(*pcIndex) = (*pcIndex) + 3;
 
+}
+
+void ReadIntToRegister(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//数据地址H
+	uint8 paramer2,					//数据地址L
+	uint8 paramer3,					//寄存器地址L
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, INTPOOLSIZE - 1);
+	int value = intPool->buffer[adress];
+	noaRegister[paramer3] = value;
+	(*pcIndex) = (*pcIndex) + 4;
+}
+
+void RegisterFloat2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,					//地址H
+	uint8 paramer2,					//地址L
+	uint8 paramer3,					//寄存器地址
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, FLOATPOOLSIZE - 1);
+
+	int64 valueInt = 0;
+	valueInt = noaRegister[paramer3];
+
+	float value = 0;
+	value = *(float*)&valueInt;
+
+	floatPool->buffer[adress] = value;
+	//printf("[warring]:从寄存器读取数据成功\n");
+	//printf("[warring]:写入对象池浮点型数据:%f,十六进制为:%x %x %x %x\n", value, paramer3, paramer4, paramer5, paramer6);
+	(*pcIndex) = (*pcIndex) + 4;
 }
 
 void WriteFloat2Pool(
@@ -826,6 +916,47 @@ void ReadFloatFromPool(
 	(*pcIndex) = (*pcIndex) + 3;
 }
 
+void ReadFloatToRegister(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	uint8 code[2];
+	code[0] = paramer1;
+	code[1] = paramer2;
+
+	int64 adress = HashCode(code, 2, 0, FLOATPOOLSIZE - 1);
+	float value = floatPool->buffer[adress];
+	//printf("[warring]:浮点型数据:%f\n", value);
+	//printf("[warring]:读取到的字符串常量为:%s\n",str);
+
+	//将字符串保存到一个特定的位置，即ram中
+	noaRegister[paramer3] = *(int64*)&value;
+	(*pcIndex) = (*pcIndex) + 4;
+}
+
 void NoaOR(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -855,3 +986,380 @@ void NoaOR(
 ) {
 	noaRegister[paramer1] = (noaRegister[paramer1] | noaRegister[paramer2]);
 }
+
+//数据的四则运算
+void SubCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+
+	float value1 = 0;
+	float value2 = 0;
+
+	switch (paramer1)
+	{
+		
+		case 0x80:
+			noaRegister[paramer2] -= noaRegister[paramer3];
+			break;
+		case 0x81:
+			noaRegister[paramer2] -= noaRegister[paramer3];
+			break;
+		case 0x82:
+			value1 = *(float*)&noaRegister[paramer2];
+			value2 = *(float*)&noaRegister[paramer3];
+			value1 -= value2;
+			noaRegister[paramer2] = *(int64 *)&value1;
+			break;
+		default:
+			noaRegister[paramer1] -= noaRegister[paramer2];
+	}
+	
+	(*pcIndex) = ((*pcIndex) + 4);
+}
+
+void AddCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	switch (paramer1)
+	{
+	case 0x80:
+		noaRegister[paramer2] += noaRegister[paramer3];
+		break;
+	case 0x81:
+		noaRegister[paramer2] += noaRegister[paramer3];
+		//printf("[warring]:运算结果:%d\n",noaRegister[paramer2]);
+		break;
+	case 0x82:
+		float value1 = *(float*)&noaRegister[paramer2];
+		float value2 = *(float*)&noaRegister[paramer3];
+		value1 += value2;
+		noaRegister[paramer2] = *(int64*)&value1;
+		break;
+	}
+
+	(*pcIndex) = ((*pcIndex) + 4);
+}
+
+void MutiplyCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	switch (paramer1)
+	{
+	case 0x80:
+		noaRegister[paramer2] *= noaRegister[paramer3];
+		break;
+	case 0x81:
+		noaRegister[paramer2] *= noaRegister[paramer3];
+		break;
+	case 0x82:
+		float value1 = *(float*)&noaRegister[paramer2];
+		float value2 = *(float*)&noaRegister[paramer3];
+		value1 *= value2;
+		noaRegister[paramer2] = *(int64*)&value1;
+		break;
+	}
+
+	(*pcIndex) = ((*pcIndex) + 4);
+}
+
+void DivideCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	switch (paramer1)
+	{
+	case 0x80:
+		noaRegister[paramer2] /= noaRegister[paramer3];
+		break;
+	case 0x81:
+		noaRegister[paramer2] /= noaRegister[paramer3];
+		break;
+	case 0x82:
+		float value1 = *(float*)&noaRegister[paramer2];
+		float value2 = *(float*)&noaRegister[paramer3];
+		value1 /= value2;
+		noaRegister[paramer2] = *(int64*)&value1;
+		break;
+	}
+
+	(*pcIndex) = ((*pcIndex) + 4);
+}
+
+
+//逻辑运算
+void CompareCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	//判断两个寄存器的值
+	//0x00 ==
+	//0x01 >
+	//0x02 <
+	//0x03 >=
+	//0x04 <=
+	//0x05 !=
+
+	//逻辑
+	//and
+	//or
+	//non
+
+	//出现问题，寄存器中的值和浮点型整形不一样，比较结果不同
+	if (paramer1==0x82) 
+	{
+		float value1 = *(float*)&noaRegister[paramer3];
+		float value2 = *(float*)&noaRegister[paramer4];
+		switch (paramer2)
+		{
+		case 0x00:
+			noaRegister[qx] = (value1 == value2) ? 1 : 0;
+			break;
+		case 0x01:
+			noaRegister[qx] = (value1 > value2) ? 1 : 0;
+			//printf("qx = %lld 2=%lld 3=%lld\n",noaRegister[qx],noaRegister[paramer2],noaRegister[paramer3]);
+			//printf("qx = %d 2=%d 3=%d\n", noaRegister[qx], noaRegister[paramer2], noaRegister[paramer3]);
+			break;
+		case 0x02:
+			noaRegister[qx] = (value1 < value2) ? 1 : 0;
+			break;
+		case 0x03:
+			noaRegister[qx] = (value1 >= value2) ? 1 : 0;
+			break;
+		case 0x04:
+			noaRegister[qx] = (value1 <= value2) ? 1 : 0;
+			break;
+		case 0x05:
+			noaRegister[qx] = (value1 != value2) ? 1 : 0;
+			break;
+
+		case AND:
+			noaRegister[qx] = (value1 && value2) ? 1 : 0;
+			break;
+		case OR:
+			noaRegister[qx] = (value1 || value2) ? 1 : 0;
+			break;
+
+		}
+	}
+	else if(paramer1==0x81||paramer1==0x80)
+	{
+		int value1 = noaRegister[paramer3];
+		int value2 = noaRegister[paramer4];
+		switch (paramer2)
+		{
+		case 0x00:
+			noaRegister[qx] = (value1 == value2) ? 1 : 0;
+			break;
+		case 0x01:
+			noaRegister[qx] = (value1 > value2) ? 1 : 0;
+			//printf("qx = %lld 2=%lld 3=%lld\n",noaRegister[qx],noaRegister[paramer2],noaRegister[paramer3]);
+			//printf("qx = %d 2=%d 3=%d\n", noaRegister[qx], noaRegister[paramer2], noaRegister[paramer3]);
+			break;
+		case 0x02:
+			noaRegister[qx] = (value1 < value2) ? 1 : 0;
+			break;
+		case 0x03:
+			noaRegister[qx] = (value1 >= value2) ? 1 : 0;
+			break;
+		case 0x04:
+			noaRegister[qx] = (value1 <= value2) ? 1 : 0;
+			break;
+		case 0x05:
+			noaRegister[qx] = (value1 != value2) ? 1 : 0;
+			break;
+		case AND:
+			noaRegister[qx] = (value1 && value2) ? 1 : 0;
+			break;
+		case OR:
+			noaRegister[qx] = (value1 || value2) ? 1 : 0;
+			break;
+
+		}
+	}
+	else {
+		int64 value1 = noaRegister[paramer3];
+		int64 value2 = noaRegister[paramer4];
+		switch (paramer2)
+		{
+		case 0x00:
+			noaRegister[qx] = (value1 == value2) ? 1 : 0;
+			break;
+		case 0x01:
+			noaRegister[qx] = (value1 > value2) ? 1 : 0;
+			//printf("qx = %lld 2=%lld 3=%lld\n",noaRegister[qx],noaRegister[paramer2],noaRegister[paramer3]);
+			//printf("qx = %d 2=%d 3=%d\n", noaRegister[qx], noaRegister[paramer2], noaRegister[paramer3]);
+			break;
+		case 0x02:
+			noaRegister[qx] = (value1 < value2) ? 1 : 0;
+			break;
+		case 0x03:
+			noaRegister[qx] = (value1 >= value2) ? 1 : 0;
+			break;
+		case 0x04:
+			noaRegister[qx] = (value1 <= value2) ? 1 : 0;
+			break;
+		case 0x05:
+			noaRegister[qx] = (value1 != value2) ? 1 : 0;
+			break;
+
+		case AND:
+			noaRegister[qx] = (value1 && value2) ? 1 : 0;
+			break;
+		case OR:
+			noaRegister[qx] = (value1 || value2) ? 1 : 0;
+			break;
+
+		}
+	}
+	(*pcIndex) = ((*pcIndex) + 5);
+}
+
+void NonCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	noaRegister[qx] = ~(noaRegister[qx]);
+	(*pcIndex) = ((*pcIndex) + 1);
+}
+

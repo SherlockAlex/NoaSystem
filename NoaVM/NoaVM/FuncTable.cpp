@@ -27,7 +27,7 @@ void InsertFuncNode(FuncTable * table,uint8  *code,int64 pcIndex)
 	funcNode.funcHashCode[2] = code[2];
 	funcNode.funcHashCode[3] = code[3];
 	funcNode.pcIndex = pcIndex;
-	int64 funcIndex = HashCode(code, 4, 0, FUNCTABLESIZE);
+	int64 funcIndex = HashCode(code, 4, 0, FUNCTABLESIZE-1);
 	table->table[funcIndex] = funcNode;
 	table->count++;
 	//printf("[warring]:插入函数成功:函数名:%x %x %x %x,hashCode:%d，PC:%d\n",code[0],code[1],code[2],code[3],funcIndex,pcIndex);

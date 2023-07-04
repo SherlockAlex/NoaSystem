@@ -60,6 +60,34 @@ extern void PrintRegister(
 	CodeStack* callStack
 );
 
+extern void ScanCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
 extern void MoveToRegister(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -87,7 +115,8 @@ extern void MoveToRegister(
 	NoaFile* file,
 	CodeStack* callStack
 );
-extern void AddByte(
+
+extern void SaveRegister(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
 	uint8 paramer2,
@@ -114,33 +143,8 @@ extern void AddByte(
 	NoaFile* file,
 	CodeStack* callStack
 );
-extern void Sub(
-	RAM* ram,						//内存模拟
-	uint8 paramer1,
-	uint8 paramer2,
-	uint8 paramer3,
-	uint8 paramer4,
-	uint8 paramer5,
-	uint8 paramer6,
-	uint8 paramer7,
-	uint8 paramer8,
-	uint8 paramer9,
-	uint8 paramer10,
-	uint8 paramer11,
-	uint8 paramer12,
-	uint8 paramer13,
-	uint8 paramer14,
-	uint8 paramer15,
-	uint8 paramer16,
-	uint8 paramer17,
-	uint8 paramer18,
-	uint8 paramer19,
-	uint8 paramer20,
 
-	int64* pcIndex,
-	NoaFile* file,
-	CodeStack* callStack
-);
+
 extern void WriteToRAM(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -253,6 +257,34 @@ extern void ReadFromString(
 	CodeStack* callStack
 );
 
+extern void RegisterInt2Pool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
 extern void WriteInt2Pool(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -282,6 +314,62 @@ extern void WriteInt2Pool(
 );
 
 extern void ReadIntFromPool(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void ReadIntToRegister(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void RegisterFloat2Pool(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
 	uint8 paramer2,
@@ -365,7 +453,7 @@ extern void ReadFloatFromPool(
 	CodeStack* callStack
 );
 
-extern void NoaOR(
+extern void ReadFloatToRegister(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
 	uint8 paramer2,
@@ -392,8 +480,7 @@ extern void NoaOR(
 	NoaFile* file,
 	CodeStack* callStack
 );
-extern void Mutiply(RAM* ram, int64 adress1, int64 adress2, int* pcIndex);
-extern void Divide(RAM* ram, int64 adress1, int64 adress2, int* pcIndex);
+
 extern void CallCode(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -448,7 +535,7 @@ extern void ReturnCode(
 	NoaFile* file,
 	CodeStack* callStack
 );
-extern void Divide(RAM* ram, int64 adress1, int64 adress2, int* pcIndex);
+
 extern void IFCode(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
@@ -506,6 +593,175 @@ extern void ELSECode(
 );
 
 extern void LoopCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void SubCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void AddCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void MutiplyCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void DivideCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+//逻辑运算
+extern void CompareCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+);
+
+extern void NonCode(
 	RAM* ram,						//内存模拟
 	uint8 paramer1,
 	uint8 paramer2,

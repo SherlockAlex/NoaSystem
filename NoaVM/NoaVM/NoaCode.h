@@ -19,9 +19,14 @@
 #define loop	0x0c
 #define call	0x0d
 #define IF		0x0f
+#define IN      0x20			//检测键盘输入
+#define SAV     0x21
+
 #define AND		0x10
 #define OR		0x11
-#define CMP		0x12
+#define NON     0x1f
+#define CMP		0x12			 //比较
+
 #define rfm     0x13
 #define ELSE    0x14             //和if相反
 
@@ -37,6 +42,11 @@
 #define INTREADER   0x1d
 #define FLOATREADER 0x1e
 
+#define INTREGSTER  0x22
+#define FLOATREGSTER  0x23
+
+#define INTWRITE  0x24
+#define FLOATWRITE  0x24
 
 #define quit 0xe0
 
@@ -49,5 +59,13 @@
 #define ax  0x04
 #define qx  0x05//逻辑寄存器，用于存放逻辑运算的结果
 #define loopcounter 0x06//循环计数器,记录剩余要循环的次数
+#define returnx     0x07//函数返回值寄存器
+
+#define xx  0x08
+#define yx  0x09
+#define zx  0x0a
+#define ox  0x0b
+#define px  0x0c
+#define rx  0x0d
 
 #endif // !NOAVM_NOACODE_H
