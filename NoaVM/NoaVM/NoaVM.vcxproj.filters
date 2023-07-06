@@ -36,6 +36,9 @@
     <ClInclude Include="NoaMath.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,6 +66,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NoaMath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

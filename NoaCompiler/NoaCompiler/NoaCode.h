@@ -46,7 +46,10 @@
 #define FLOATREGSTER  0x23
 
 #define INTWRITE  0x24
-#define FLOATWRITE  0x24
+#define FLOATWRITE  0x25
+
+#define MOD       0x26
+#define RAND	  0x27
 
 #define quit 0xe0
 
@@ -56,7 +59,7 @@
 #define ecx 0x02
 #define edx 0x03
 
-#define ax  0x04
+#define ax  0x04//产生随机数，生成的随机数会放在ax中
 #define qx  0x05//逻辑寄存器，用于存放逻辑运算的结果
 #define loopcounter 0x06//循环计数器,记录剩余要循环的次数
 #define returnx     0x07//函数返回值寄存器

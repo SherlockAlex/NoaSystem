@@ -20,7 +20,7 @@ uint8 HashCode8(char* key) {
 	hash2[0] = hash[i - 1];
 	int j = 1;
 	for (j = 1; j < length; j++) {
-		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) & mod2;
+		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) % mod2;
 	}
 
 	return hash2[j - 1] + 1;//返回值不能为0
@@ -45,7 +45,7 @@ short HashCode16(char* key) {
 	hash2[0] = hash[i - 1];
 	int j = 1;
 	for (j = 1; j < length; j++) {
-		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) & mod2;
+		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) % mod2;
 	}
 
 	return hash2[j - 1] + 1;//返回值不能为0
@@ -70,11 +70,20 @@ uint32 HashCode(char* key) {
 	hash2[0] = hash[i-1];
 	uint32 j = 1;
 	for (j = 1; j < length;j++) {
-		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) & mod2;
+		hash2[j] = (hash2[j - 1] * base2 + key[length - 1 - j]) % mod2;
 	}
 
-	//return hash3[k-1]+1;//返回值不能为0
-	return hash2[j - 1]+1;//返回值可以为0
+	uint32 hash3[50];				//key最长只有50个字符
+	uint32 base3 = 9719;
+	uint32 mod3 = 4294967295;
+	hash3[0] = hash2[j - 1];
+	uint32 k = 1;
+	for (k = 1; k < length; k++) {
+		hash3[k] = ((hash3[k - 1] * base3) + key[k]) % mod3;
+	}
+
+	return hash3[k-1]+1;//返回值不能为0
+	//return hash2[j - 1]+1;//返回值可以为0
 }
 
 bool isNum(char* str) {

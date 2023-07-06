@@ -27,7 +27,7 @@ void IncreaseStack(CodeStack* stack) {
 void PushCodeStack(CodeStack* stack, int64 code)
 {
 
-	if (stack->top==1023)
+	if (stack->top== CALLINDEXSIZE-1)
 	{
 		printf("[error]:º¯ÊıÈëÕ»Ê§°Ü,Õ»Âú\n");
 		return;

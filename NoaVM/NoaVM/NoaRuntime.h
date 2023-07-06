@@ -5,10 +5,12 @@
 #include "NoaFile.h"
 #include "string.h"
 #include "RAM.h"
+#include <map>
+#include <unordered_map>
 
 #define OPMAPSIZE 256
-#define CALLINDEXSIZE 1024
-#define FUNCTABLESIZE 4096
+#define CALLINDEXSIZE 65535
+#define FUNCTABLESIZE 65535
 
 //字符串常量池
 extern StringPool* stringPool;
@@ -73,6 +75,38 @@ typedef struct Operator {
 		);								//指令
 }Operator;
 
+typedef void(*opFunc)(
+	RAM*,						//内存模拟
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+	uint8 ,
+
+	int64* ,
+	NoaFile* ,
+	CodeStack* 
+	);//定义别名才能放在vector中
+
+extern std::unordered_map<uint8, opFunc> OperatorTable;
+
+extern std::unordered_map<int, int64> funcHashTable;
+
 typedef struct OperatorMap {
 	//指令链表
 	Operator* operatorMap;
@@ -133,4 +167,5 @@ extern FuncTable funcTable;
 extern void InitFuncTable(FuncTable* table);
 extern void InsertFuncNode(FuncTable* table, uint8* code, int64 pcIndex);
 extern FuncNode* GetFunc(FuncTable* table, int64 hashCode);
+extern FuncNode* GetFunc(FuncTable* table, uint8 * code);
 #endif // !NOAVM_NOARUNTIME_H

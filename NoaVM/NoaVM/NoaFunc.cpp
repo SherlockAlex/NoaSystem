@@ -328,8 +328,12 @@ void CallCode(
 	code[1] = paramer2;
 	code[2] = paramer3;
 	code[3] = paramer4;
-	int64 funcHashCode = HashCode(code,4,0, FUNCTABLESIZE - 1);
-	FuncNode* func = GetFunc(&funcTable,funcHashCode);
+
+	//每次都在重新计算函数地址
+	//int64 funcHashCode = HashCode(code,4,0, FUNCTABLESIZE - 1);
+	//int64 funcHashCode = funcHashTable[ByteToInt(code)];
+	//FuncNode* func = GetFunc(&funcTable,funcHashCode);
+	FuncNode* func = GetFunc(&funcTable, code);
 	//函数位置定位搜索算法
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
@@ -400,6 +404,7 @@ extern void LoopCode(
 	CodeStack* callStack
 ) {
 	//循环到loopcounter的值小于0
+	//优化
 	int64 loopIndex = (*pcIndex);
 	if (noaRegister[loopcounter]<=0)
 	{
@@ -410,17 +415,14 @@ extern void LoopCode(
 	}
 
 	PushCodeStack(callStack, loopIndex);
+	int64 funcIndex = 0;
+	uint8 code[4] = { paramer1,paramer2,paramer3,paramer4 };
+	//int64 funcHashCode = funcHashTable[ByteToInt(code)];
+	//FuncNode* func = GetFunc(&funcTable, funcHashCode);
+	FuncNode* func = GetFunc(&funcTable, code);
+	funcIndex = func->pcIndex;
 
-	uint8 code[4];
-	code[0] = paramer1;
-	code[1] = paramer2;
-	code[2] = paramer3;
-	code[3] = paramer4;
-	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE - 1);
-	FuncNode* func = GetFunc(&funcTable, funcHashCode);
-	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
-	
 }
 
 
@@ -462,13 +464,17 @@ void IFCode(
 	int64 nextCodeIndex = (*pcIndex) + 6;
 	PushCodeStack(callStack, nextCodeIndex);
 
-	uint8 code[4];
-	code[0] = paramer2;
+	uint8 code[4] = { paramer1,paramer2,paramer3,paramer4 };
+	/*code[0] = paramer2;
 	code[1] = paramer3;
 	code[2] = paramer4;
-	code[3] = paramer5;
-	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE-1);
-	FuncNode* func = GetFunc(&funcTable, funcHashCode);
+	code[3] = paramer5;*/
+	//int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE-1);
+	//int64 funcHashCode = funcHashTable[ByteToInt(code)];
+	//FuncNode* func = GetFunc(&funcTable, funcHashCode);
+
+	FuncNode* func = GetFunc(&funcTable, code);
+
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
 
@@ -516,13 +522,10 @@ void ELSECode(
 	int64 nextCodeIndex = (*pcIndex) + 6;
 	PushCodeStack(callStack, nextCodeIndex);
 
-	uint8 code[4];
-	code[0] = paramer2;
-	code[1] = paramer3;
-	code[2] = paramer4;
-	code[3] = paramer5;
-	int64 funcHashCode = HashCode(code, 4, 0, FUNCTABLESIZE-1);
-	FuncNode* func = GetFunc(&funcTable, funcHashCode);
+	uint8 code[4] = { paramer1,paramer2,paramer3,paramer4 };
+	//int64 funcHashCode = funcHashTable[ByteToInt(code)];
+	//FuncNode* func = GetFunc(&funcTable, funcHashCode);
+	FuncNode* func = GetFunc(&funcTable, code);
 	int64 funcIndex = func->pcIndex;
 	(*pcIndex) = funcIndex;
 
@@ -1180,6 +1183,85 @@ void DivideCode(
 	(*pcIndex) = ((*pcIndex) + 4);
 }
 
+
+void ModCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	switch (paramer1)
+	{
+	case 0x80:
+		noaRegister[paramer2] %= noaRegister[paramer3];
+		break;
+	case 0x81:
+		noaRegister[paramer2] %= noaRegister[paramer3];
+		break;
+	case 0x82:
+		int value1 = *(float*)&noaRegister[paramer2];
+		int value2 = *(float*)&noaRegister[paramer3];
+		value1 %= value2;
+		noaRegister[paramer2] = *(int64*)&value1;
+		break;
+	}
+
+	(*pcIndex) = ((*pcIndex) + 4);
+}
+
+void RandCode(
+	RAM* ram,						//内存模拟
+	uint8 paramer1,
+	uint8 paramer2,
+	uint8 paramer3,
+	uint8 paramer4,
+	uint8 paramer5,
+	uint8 paramer6,
+	uint8 paramer7,
+	uint8 paramer8,
+	uint8 paramer9,
+	uint8 paramer10,
+	uint8 paramer11,
+	uint8 paramer12,
+	uint8 paramer13,
+	uint8 paramer14,
+	uint8 paramer15,
+	uint8 paramer16,
+	uint8 paramer17,
+	uint8 paramer18,
+	uint8 paramer19,
+	uint8 paramer20,
+
+	int64* pcIndex,
+	NoaFile* file,
+	CodeStack* callStack
+) {
+	//生成随机数到ax
+	srand((unsigned)time(nullptr));
+	noaRegister[ax] = rand();
+	(*pcIndex) = (*pcIndex) + 1;
+}
 
 //逻辑运算
 void CompareCode(

@@ -2,6 +2,8 @@
 #include "malloc.h"
 #include "stdio.h"
 
+std::unordered_map<uint8, opFunc> OperatorTable;
+
 void InitOperator
 (	uint8 adress,
 	void (*func)(						//执行操作，并跳转pc
@@ -57,6 +59,7 @@ void InsertOperator2Map(OperatorMap* map, Operator op)
 	//printf("[warring]:指令初始化成功:%x\n",op.adress);
 	uint8 adress = op.adress;
 	map->operatorMap[adress] = op;
+	OperatorTable[adress] = op.func;
 }
 
 Operator * GetOperator(OperatorMap* map, uint8 adress) 

@@ -98,6 +98,16 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = add;
 			fwrite(data, sizeof(int64), 1, outFile);
 		}
+		else if (strcmp(code, "mod") == 0)
+		{
+			data[i] = MOD;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
+		else if (strcmp(code, "rand") == 0)
+		{
+			data[i] = RAND;
+			fwrite(data, sizeof(int64), 1, outFile);
+		}
 		else if (strcmp(code, "sub") == 0)
 		{
 			data[i] = sub;

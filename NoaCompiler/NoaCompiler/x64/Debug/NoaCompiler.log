@@ -1,11 +1,9 @@
-﻿  Compiler.cpp
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(15,25): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(232,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(232,11): message : 请考虑在格式字符串中使用“%zd”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(267,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(267,11): message : 请考虑在格式字符串中使用“%zd”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(425,11): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(425,11): message : 请考虑在格式字符串中使用“%zd”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(1049,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“size_t”
-D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\Compiler.cpp(1049,12): message : 请考虑在格式字符串中使用“%zd”
+﻿  HashMath.cpp
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(12,26): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(34,19): warning C4305: “初始化”: 从“int”到“uint8”截断
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(34,14): warning C4309: “初始化”: 截断常量值
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(37,26): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(44,20): warning C4305: “初始化”: 从“int”到“uint8”截断
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(44,15): warning C4309: “初始化”: 截断常量值
+D:\Work\NoaSystem\NoaSystem\NoaCompiler\NoaCompiler\HashMath.cpp(62,29): warning C4267: “初始化”: 从“size_t”转换到“uint32”，可能丢失数据
   NoaCompiler.vcxproj -> D:\Work\NoaSystem\NoaSystem\NoaCompiler\x64\Debug\NoaCompiler.exe

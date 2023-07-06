@@ -18,7 +18,7 @@ int64 HashCode(uint8* key, int64 length,int64 min,int64 max)
 	hash2[0] = hash[i - 1];
 	int64 j = 1;
 	for (j = 1; j < length; j++) {
-		hash2[j] = ((hash2[j - 1] * base2) + key[length - 1 - j]) & mod2;
+		hash2[j] = ((hash2[j - 1] * base2) + key[length - 1 - j]) % mod2;
 	}
 
 	int64 hash3[4];				//key最长只有50个字符
@@ -31,4 +31,10 @@ int64 HashCode(uint8* key, int64 length,int64 min,int64 max)
 	}
 
 	return hash3[k - 1] + min;//返回值不能为0
+}
+
+
+int ByteToInt(uint8* byte) {
+	int value = (int)(((byte[0] & 0xff) << 24) | ((byte[1] & 0xff) << 16) | ((byte[2] & 0xff) << 8) | (byte[3] & 0xff));
+	return value;
 }

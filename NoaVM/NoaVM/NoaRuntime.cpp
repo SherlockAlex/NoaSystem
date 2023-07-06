@@ -111,6 +111,9 @@ int CreateOperator(OperatorMap * map)
 	InitOperator(add, AddCode, map);
 	InitOperator(mul, MutiplyCode, map);
 	InitOperator(div, DivideCode, map);
+	InitOperator(MOD, ModCode, map);
+
+	InitOperator(RAND, RandCode, map);
 
 	//逻辑-条件运算
 	InitOperator(CMP, CompareCode, map);
@@ -211,7 +214,7 @@ int Run(NoaFile* file) {
 	//int counter = 0;
 
 	//printf("\n[warring]:开始执行Noa文件\n");
-	//clock_t startTime = clock();
+	clock_t startTime = clock();
 	while (isRunning)
 	{
 		//运行速度太慢
@@ -244,11 +247,6 @@ int Run(NoaFile* file) {
 		pramater20 = file->data[pcIndex + 20];
 
 		Operator * op = GetOperator(&opMap,pc);//效率慢
-		if (op==nullptr)
-		{
-			printf("[error]:程序异常,取指令失败\n");
-			break;
-		}
 		op->func(ram,
 			pramater1,pramater2,pramater3,pramater4,
 			pramater5,pramater6,pramater7,pramater8,
@@ -259,7 +257,7 @@ int Run(NoaFile* file) {
 
 	}
 
-	//std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
+	std::cout << std::endl << "[warring]:运行时间:" << double(clock() - startTime) / CLOCKS_PER_SEC << std::endl;
 
 	//释放计算机资源
 	free(ram);
@@ -268,6 +266,5 @@ int Run(NoaFile* file) {
 	free(stringPool);
 	free(intPool);
 	free(floatPool);
-	//printf("释放资源完成\n");
 	return 0;
 }
