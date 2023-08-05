@@ -207,14 +207,7 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = nameCode[0];
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			/*data[i] = nameHashCode;
-			fwrite(data, sizeof(int64), 1, outFile);*/
 		}
-		/*else if (strcmp(code, "return") == 0)
-		{
-			data[i] = recall;
-			fwrite(data, sizeof(int64), 1, outFile);
-		}*/
 		else if (strcmp(code, ".quit") == 0)
 		{
 			data[i] = quit;
@@ -528,23 +521,6 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = posL;
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			//计算值
-
-			//fscanf(file, "%s", code);				//读取数值
-
-			//int value = 0;
-			////value = atoi(code);
-			//sscanf(code, "%d", &value);
-			//printf("读取到的整形字符:%s,int值为:%d\n", code, value);
-
-			//data[i] = (uint8)((value) >> 24);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value) >> 16);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value) >> 8);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value));
-			//fwrite(data, sizeof(int64), 1, outFile);
 		}
 
 		else if (strcmp(code, "int") == 0) {
@@ -594,7 +570,7 @@ void Compile(FILE * file,FILE* outFile) {
 
 			fscanf(file, "%s", code);				//读取变量名
 			short startPos = 0;						//计算要保存的内存地址的起始地址
-			//startPos = HashCode8(code);
+
 			startPos = HashCode16(code);				//字符串再常量池中的地址
 			//计算起始地址的高位和地位
 			uint8 posL = (uint8)(startPos & 0xff);
@@ -647,23 +623,6 @@ void Compile(FILE * file,FILE* outFile) {
 			data[i] = posL;
 			fwrite(data, sizeof(int64), 1, outFile);
 
-			//计算值
-
-			//fscanf(file, "%s", code);				//读取数值
-
-			//int value = 0;
-			////value = atoi(code);
-			//sscanf(code, "%d", &value);
-			//printf("读取到的整形字符:%s,int值为:%d\n", code, value);
-
-			//data[i] = (uint8)((value) >> 24);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value) >> 16);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value) >> 8);
-			//fwrite(data, sizeof(int64), 1, outFile);
-			//data[i] = (uint8)((value));
-			//fwrite(data, sizeof(int64), 1, outFile);
 		}
 
 		else if (strcmp(code, "float") == 0) {
@@ -689,9 +648,6 @@ void Compile(FILE * file,FILE* outFile) {
 			//计算值
 
 			fscanf(file, "%s", code);				//读取数值
-
-			/*int value = 0;
-			value = atoi(code);*/
 
 			float num = 0;
 			sscanf(code, "%f", &num);
@@ -1029,7 +985,6 @@ void Compile(FILE * file,FILE* outFile) {
 
 		else if (code[0] == '#')
 		{
-
 			//赋值注释模块直接注释掉
 			continue;
 		}
