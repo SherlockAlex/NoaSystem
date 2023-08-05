@@ -8,7 +8,7 @@
 
 
 
-int64 codeIndexBuffer[CALLINDEXSIZE];
+static int64 codeIndexBuffer[CALLINDEXSIZE];
 void InitCodeStack(CodeStack* stack,int length)
 {
 	stack->top = -1;
@@ -24,7 +24,7 @@ void IncreaseStack(CodeStack* stack) {
 	//发现不够用时
 }
 
-void PushCodeStack(CodeStack* stack, int64 code)
+void PushCodeStack(CodeStack* stack,const int64 code)
 {
 
 	if (stack->top== CALLINDEXSIZE-1)
@@ -45,12 +45,12 @@ int64 PopCodeStack(CodeStack* stack)
 		printf("[error]:当前栈为空\n");
 		return -1;
 	}
-	int64 code = stack->codeIndex[stack->top];
+	const int64 code = stack->codeIndex[stack->top];
 	stack->top = stack->top - 1;
 	return code;
 
 }
-extern int64 GetHeadOfStack(CodeStack* stack)
+int64 GetHeadOfStack(CodeStack* stack)
 {
 	//获取栈顶
 	if (stack->top==-1) {

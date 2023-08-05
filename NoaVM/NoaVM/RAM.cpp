@@ -4,7 +4,7 @@
 
 int64 noaRegister[14] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
-int64 ramBuffer[RAMSIZE];
+static int64 ramBuffer[RAMSIZE];
 
 RAM * InitRAM(int ramSize) {
 	RAM* ram = (RAM*)malloc(sizeof(RAM));
@@ -14,7 +14,7 @@ RAM * InitRAM(int ramSize) {
 	return ram;
 }
 
-char* stringBuffer[STRINGPOOLSIZE];					//静态分配常量池大小
+static char* stringBuffer[STRINGPOOLSIZE];					//静态分配常量池大小
 StringPool* InitStringPool(int bufferSize) {
 	StringPool* stringPool = (StringPool*)malloc(sizeof(StringPool));
 	stringPool->bufferSize = bufferSize;
@@ -23,7 +23,7 @@ StringPool* InitStringPool(int bufferSize) {
 	return stringPool;
 }
 
-int intBuffer[INTPOOLSIZE];
+static int intBuffer[INTPOOLSIZE];
 IntPool* InitIntPool(int bufferSize) {
 	IntPool* intPool = (IntPool*)malloc(sizeof(IntPool));
 	intPool->bufferSize = bufferSize;
@@ -32,7 +32,7 @@ IntPool* InitIntPool(int bufferSize) {
 	return intPool;
 }
 
-float floatBuffer[FLOATPOOLSIZE];
+static float floatBuffer[FLOATPOOLSIZE];
 FloatPool* InitFloatPool(int bufferSize) {
 	FloatPool* pool = (FloatPool*)malloc(sizeof(FloatPool));
 	pool->bufferSize = bufferSize;

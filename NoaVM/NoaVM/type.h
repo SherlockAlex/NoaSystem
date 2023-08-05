@@ -1,6 +1,7 @@
 #ifndef NOAVM_TYPE_H
 #define NOAVM_TYPE_H
 
+typedef unsigned int uint32;
 typedef long int int64array[65535];
 typedef long long int64;				//数据类型
 

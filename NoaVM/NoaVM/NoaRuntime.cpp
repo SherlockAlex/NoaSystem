@@ -10,24 +10,32 @@
 uint8 pc = 0x00;
 FuncTable funcTable;
 
+//PC
+int64* PC;
+
 //常量池区域
 StringPool* stringPool;
 IntPool* intPool;
 FloatPool* floatPool;
 
-int64 GetDataSize(const char * filePath) 
+//缓存区
+RAM* ram;
+
+//指令操作数区
+Parameter parameter;
+
+//函数调用栈
+CodeStack callStack;
+
+int64 GetDataSize(const char* filePath)
 {
 	FILE* file = fopen(filePath, "r");
-	if (file==nullptr) {
+	if (file == nullptr) {
 		return 0;
 	}
-	int64 count = 0;
 
-	int64 mess;
-	while ((mess=fgetc(file))!=EOF)
-	{
-		count++;
-	}
+	fseek(file, 0, SEEK_END);
+	int64 count = ftell(file);
 
 	fclose(file);
 	return count;
@@ -41,8 +49,8 @@ NoaFile * LoadFile(const char* filePath)
 		printf("加载文件失败\n");
 		return nullptr;
 	}
-	int64 size = GetDataSize(filePath);
-	uint8* codes = (uint8*)malloc(size * sizeof(uint8));
+	const int64 size = GetDataSize(filePath);
+	static uint8* codes = (uint8*)malloc(size * sizeof(uint8));
 	fread(codes, sizeof(int64), size, file);
 	fclose(file);
 	bool isNoaFile = (codes[0] == 0x4e && codes[1] == 0x4f && codes[2] == 0x41);
@@ -124,7 +132,7 @@ int CreateOperator(OperatorMap * map)
 
 void CreateFuncTable(NoaFile * file,FuncTable * table) {
 	uint8 code[4];
-	for (int i = 4; i < file->length;i++)
+	for (uint32 i = 4; i < file->length;i++)
 	{
 		if (file->data[i-4]==fun)
 		{
@@ -152,11 +160,11 @@ int Run(NoaFile* file) {
 		return -1;
 	}
 	//运行内存：(1024*1024)Byte
-	RAM * ram = InitRAM(RAMSIZE);
+	ram = InitRAM(RAMSIZE);
 	
 	//初始化指令表
 	OperatorMap opMap;
-	CodeStack callStack;
+	
 	InitOperatorMap(&opMap, OPMAPSIZE);
 
 	CreateOperator(&opMap);
@@ -164,7 +172,7 @@ int Run(NoaFile* file) {
 	//初始化函数栈
 	InitCodeStack(&callStack,CALLINDEXSIZE);
 	int64 pcIndex = 0;
-	
+	PC = &pcIndex;
 	//初始化函数表
 	InitFuncTable(&funcTable);
 	CreateFuncTable(file,&funcTable);
@@ -186,74 +194,24 @@ int Run(NoaFile* file) {
 		return -1;
 	}
 
-
-	pc = file->data[pcIndex];
-	//printf("初始的指令为:%x\n",pc);
-	uint8 pramater1 = 0;
-	uint8 pramater2 = 0;
-	uint8 pramater3 = 0;
-	uint8 pramater4 = 0;
-	uint8 pramater5 = 0;
-	uint8 pramater6 = 0;
-	uint8 pramater7 = 0;
-	uint8 pramater8 = 0;
-	uint8 pramater9 = 0;
-	uint8 pramater10 = 0;
-	uint8 pramater11 = 0;
-	uint8 pramater12 = 0;
-	uint8 pramater13 = 0;
-	uint8 pramater14 = 0;
-	uint8 pramater15 = 0;
-	uint8 pramater16 = 0;
-	uint8 pramater17 = 0;
-	uint8 pramater18 = 0;
-	uint8 pramater19 = 0;
-	uint8 pramater20 = 0;
-
-	bool isRunning = true;
-	//int counter = 0;
-
-	//printf("\n[warring]:开始执行Noa文件\n");
+	const uint8* fileData = file->data;
+	const OperatorMap* opMapAdress = &opMap;
+	pc = fileData[pcIndex];
+	
+	uint8* parameters = parameter.paramer;
 	clock_t startTime = clock();
-	while (isRunning)
+	while (1)
 	{
 		//运行速度太慢
-		pc = file->data[pcIndex];
+		pc = fileData[pcIndex];
 		if (pc == quit) 
 		{
-			//printf("msg:程序执行完成\n");
 			pcIndex = 0;
 			break;
 		}
-		pramater1 = file->data[pcIndex + 1];
-		pramater2 = file->data[pcIndex + 2];
-		pramater3 = file->data[pcIndex + 3];
-		pramater4 = file->data[pcIndex + 4];
-		pramater5 = file->data[pcIndex + 5];
-		pramater6 = file->data[pcIndex + 6];
-		pramater7 = file->data[pcIndex + 7];
-		pramater8 = file->data[pcIndex + 8];
-		pramater9 = file->data[pcIndex + 9];
-		pramater10 = file->data[pcIndex + 10];
-		pramater11 = file->data[pcIndex + 11];
-		pramater12 = file->data[pcIndex + 12];
-		pramater13 = file->data[pcIndex + 13];
-		pramater14 = file->data[pcIndex + 14];
-		pramater15 = file->data[pcIndex + 15];
-		pramater16 = file->data[pcIndex + 16];
-		pramater17 = file->data[pcIndex + 17];
-		pramater18 = file->data[pcIndex + 18];
-		pramater19 = file->data[pcIndex + 19];
-		pramater20 = file->data[pcIndex + 20];
-
-		Operator * op = GetOperator(&opMap,pc);//效率慢
-		op->func(ram,
-			pramater1,pramater2,pramater3,pramater4,
-			pramater5,pramater6,pramater7,pramater8,
-			pramater9,pramater10,pramater11,pramater12,
-			pramater13,pramater14,pramater15,pramater16,
-			pramater17,pramater18,pramater19,pramater20,
-			&pcIndex,file,&callStack);
+		memcpy(parameters, &fileData[(pcIndex + 1)], 20 * sizeof(uint8));
+		const Operator * op = GetOperator(opMapAdress,pc);//效率慢
+		op->func();
 
 	}
 

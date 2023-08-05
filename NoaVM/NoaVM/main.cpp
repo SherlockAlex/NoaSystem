@@ -10,11 +10,14 @@ int main(int argc,char * argv[])
 	
 	if (argc<2) {
 		printf("[error]:没有任何noa文件可以执行\n");
+		/*static NoaFile* noaFile = nullptr;
+		noaFile = LoadFile("./test1.noa");
+		Run(noaFile);*/
 		return 0;
 	}
 	else
 	{
-		NoaFile* noaFile = nullptr;
+		static NoaFile* noaFile = nullptr;
 		noaFile = LoadFile(argv[1]);
 		Run(noaFile);
 	}

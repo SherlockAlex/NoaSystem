@@ -37,6 +37,14 @@ typedef struct FloatPool {
 	int bufferSize;
 }FloatPool;
 
+typedef struct StructObject {
+	//一个结构体对象的基本元素
+}StructObject;
+
+typedef struct StructPool {
+	StructObject *buffer;
+	int bufferSize;
+}StructPool;
 
 //浮点数常量池
 

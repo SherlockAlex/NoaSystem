@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <iostream>
 
-NoaFile* InitNoaFile(uint8* data, int64 length) {
+NoaFile* InitNoaFile(static uint8* data, int64 length) {
 	NoaFile* noaFile = (NoaFile*)malloc(sizeof(NoaFile));
 	if (noaFile == nullptr)
 	{
